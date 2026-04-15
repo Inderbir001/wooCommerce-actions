@@ -10,10 +10,9 @@ async function createProduct(productData) {
         username: config.key,
         password: config.secret,
       },
-    }
+    },
   );
 
-//   console.log("✅ Product Created:", response.data.id);
   return response.data;
 }
 

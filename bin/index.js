@@ -37,10 +37,6 @@ async function startCLI() {
   if (answer.action === "order") {
     const inputs = await inquirer.prompt([
       {
-        name: "name",
-        message: "Enter customer name:",
-      },
-      {
         name: "product",
         message: "Enter product ID:",
         validate: (val) => !isNaN(val) || "Enter valid number",
@@ -59,8 +55,8 @@ async function startCLI() {
 
     const orderData = {
       shipping: {
-        first_name: inputs.name,
-        last_name: "Doe",
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
         address_1: faker.location.streetAddress(),
         city: faker.location.city(),
         state: faker.location.state(),
@@ -90,7 +86,19 @@ async function startCLI() {
   // CREATE PRODUCT
   // =========================
   else if (answer.action === "product") {
-    const productData = {
+    const inputs = await inquirer.prompt([
+      {
+        type: "list",
+        name: "type",
+        message: "What kind of product do you want to order?",
+        choices: [
+          { name: "> Simple Product", value: "simple" },
+          { name: "> Variable Product", value: "variable" },
+        ],
+      },
+    ]);
+
+    const simpleProductData = {
       name: faker.commerce.productName(),
       type: "simple",
       description: faker.commerce.productDescription(),
@@ -98,14 +106,27 @@ async function startCLI() {
       regular_price: faker.commerce.price(),
     };
 
-    try {
-      const spinner = ora("Creating product...").start();
-      const product = await createProduct(productData);
-      spinner.succeed(`Product Created ✅ ID: ${product.id}
+    if (inputs.type === "simple") {
+      try {
+        const spinner = ora("Creating product...").start();
+        const product = await createProduct(simpleProductData);
+        spinner.succeed(`Product Created ✅ ID: ${product.id}
             `);
-    } catch (err) {
-      console.log("❌ Error:", err.message);
+      } catch (err) {
+        console.log("❌ Error:", err.message);
+      }
     }
+
+    // if (inputs.type === "variable") {
+    //   try {
+    //     const spinner = ora("Creating product...").start();
+    //     const product = await createProduct(productData);
+    //     spinner.succeed(`Product Created ✅ ID: ${product.id}
+    //         `);
+    //   } catch (err) {
+    //     console.log("❌ Error:", err.message);
+    //   }
+    // }
   }
 
   // =========================
