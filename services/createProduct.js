@@ -1,10 +1,10 @@
 const axios = require("axios");
 const config = require("../utils/config");
 
-async function createProduct(simpleProductData, numOfProducts) {
+async function createProduct(getSimpleProductData, numOfProducts) {
   const productResults = [];
   for (let i = 0; i < numOfProducts; i++) {
-    const payload = simpleProductData();
+    const payload = getSimpleProductData();
 
     const response = await axios.post(
       `${config.baseUrl}/wp-json/wc/v3/products`,

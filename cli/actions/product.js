@@ -21,11 +21,11 @@ async function handleProduct() {
     { name: "height", message: "Enter height:" },
     {
       name: "numOfProducts",
-      message: "How many products?",
+      message: "How many products of similar kind to create?",
     },
   ]);
 
-  const simpleProductData = () => ({
+  const getSimpleProductData = () => ({
     name: faker.commerce.productName(),
     type: "simple",
     status: "publish",
@@ -46,7 +46,7 @@ async function handleProduct() {
     const spinner = ora(`Creating ${inputs.numOfProducts} products...`).start();
 
     try {
-      await createProduct(simpleProductData, parseInt(inputs.numOfProducts));
+      await createProduct(getSimpleProductData, parseInt(inputs.numOfProducts));
       spinner.succeed("Products Created ✅");
     } catch (err) {
       spinner.fail("Failed ❌");
