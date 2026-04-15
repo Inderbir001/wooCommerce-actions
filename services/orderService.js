@@ -15,7 +15,10 @@ async function createOrder(orderData, numOfOrders) {
       },
     );
     results.push(response.data);
-    console.log(`✅ Order ${i + 1} Created:`, response.data.id);
+    console.log(
+      ` > > > Completed ✅ Order ${i + 1} / ${numOfOrders} Created. Order ID:`,
+      response.data.id,
+    );
   }
   return results;
 }
