@@ -96,22 +96,62 @@ async function startCLI() {
           { name: "> Variable Product", value: "variable" },
         ],
       },
+      {
+        name: "price",
+        message: "Please enter the product price : ",
+      },
+      {
+        name: "weight",
+        message: "Please enter the weight in Store units : ",
+      },
+      {
+        name: "length",
+        message:
+          "Please enter the product Dimensions in Store units (length) : ",
+      },
+      {
+        name: "width",
+        message:
+          "Please enter the product Dimensions in Store units (width) : ",
+      },
+      {
+        name: "height",
+        message: "Please enter the product Dimensions in Store units (height) ",
+      },
+      {
+        name: "numOfProducts",
+        message: "Please enter the number of products you want to create ",
+      },
     ]);
 
-    const simpleProductData = {
+    const simpleProductData = () => ({
       name: faker.commerce.productName(),
       type: "simple",
+      status: "publish",
+      regular_price: inputs.price,
       description: faker.commerce.productDescription(),
       sku: faker.string.uuid(),
-      regular_price: faker.commerce.price(),
-    };
+      weight: String(inputs.weight),
+      dimensions: {
+        length: String(inputs.length),
+        width: String(inputs.width),
+        height: String(inputs.height),
+      },
+      manage_stock: true,
+      stock_quantity: 111111,
+    });
 
     if (inputs.type === "simple") {
       try {
-        const spinner = ora("Creating product...").start();
-        const product = await createProduct(simpleProductData);
-        spinner.succeed(`Product Created ✅ ID: ${product.id}
-            `);
+        const spinner = ora(
+          `Creating ${inputs.numOfProducts} products...`,
+        ).start();
+        const product = await createProduct(
+          simpleProductData,
+          inputs.numOfProducts,
+        );
+
+        spinner.succeed(`Product Creation Completed`);
       } catch (err) {
         console.log("❌ Error:", err.message);
       }
