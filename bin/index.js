@@ -3,16 +3,16 @@
 const chalk = require("chalk");
 const figlet = require("figlet");
 
-const { showMainMenu } = require("../cli/prompts");
+const { showMainMenu } = require("../cli/mainMenu");
 const { handleOrder } = require("../cli/actions/order");
 const { handleProduct } = require("../cli/actions/product");
 
 console.log(
-  chalk.greenBright(
+  chalk.blue(
     figlet.textSync(
       `
-  Woo Commerce Actions
---------------------
+  Woo Hoo !!!! Actions ...
+
 `,
       {
         horizontalLayout: "full",

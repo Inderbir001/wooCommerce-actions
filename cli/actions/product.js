@@ -26,9 +26,7 @@ async function handleProduct() {
   ]);
 
   if (inputs.type === "simple") {
-    const spinner = ora(
-      `Creating ${inputs.numOfProducts} simple products...`,
-    ).start();
+    const spinner = ora(`Processing`).start();
 
     try {
       await createProduct(

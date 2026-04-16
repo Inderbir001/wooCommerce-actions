@@ -17,11 +17,7 @@ async function createProduct(getSimpleProductData, numOfProducts) {
       },
     );
     productResults.push(response.data);
-    console.log(`
-      
-${i + 1}. Products Created... ✅ 
-➡️  Product ID: ${response.data.id}
-➡️  Product Name: ${response.data.name}
+    console.log(` > > > ${i + 1}. Products Created... ✅   ➡️  Product ID: ${response.data.id}  ➡️  Product Name: ${response.data.name}
             `);
   }
   return productResults;
