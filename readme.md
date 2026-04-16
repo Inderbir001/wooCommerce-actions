@@ -1,11 +1,11 @@
-<h1 align="center">🛒 Woo CLI — WooCommerce Automation Tool</h1>
+<h1 align="center">Woo CLI — WooCommerce Actions</h1>
 
 <p align="center">
   <strong>A powerful Node.js CLI tool to create WooCommerce orders and products using the REST API.</strong>
 </p>
 
 <p align="center">
-  Built for automation, testing, and bulk operations, this tool simulates real store activity using dynamic data.
+  Built for automation and bulk operations, this tool simulates real store activity using dynamic data.
 </p>
 
 ---
@@ -126,14 +126,6 @@ Upon starting the CLI, you will be presented with an interactive menu:
 - **Security:** Do NOT commit your `.env` file. Ensure it is included in your `.gitignore`.
 - **Dependencies:** Do NOT push `node_modules`.
 - **Credentials:** Ensure your WooCommerce API keys (`CONSUMER_KEY` and `CONSUMER_SECRET`) are valid and have `Read/Write` permissions.
-
-## 🚀 Future Improvements
-
-- [ ] Auto-link newly created products directly into new orders.
-- [ ] Implement a progress bar for large bulk operations.
-- [ ] Support CSV imports for bulk data creation.
-- [ ] Add a retry mechanism for failed API calls.
-- [ ] Introduce full automation testing workflows.
 
 ## 👨‍💻 Author
 
