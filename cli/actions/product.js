@@ -1,7 +1,14 @@
 const inquirer = require("inquirer");
 const ora = require("ora");
-const { createProduct } = require("../../services/productService");
-const { getSimpleProductData } = require("../data/productData");
+const {
+  createProduct,
+  createVariableProduct,
+} = require("../../services/productService");
+const {
+  getSimpleProductData,
+  getVariableProductData,
+  getVariantData,
+} = require("../data/productData");
 
 async function handleProduct() {
   const inputs = await inquirer.prompt([
@@ -31,6 +38,21 @@ async function handleProduct() {
     try {
       await createProduct(
         () => getSimpleProductData(inputs),
+        parseInt(inputs.numOfProducts),
+      );
+      spinner.succeed("Products Created ✅");
+    } catch (err) {
+      spinner.fail("Failed ❌");
+      console.log(err.message);
+    }
+  }
+  if (inputs.type === "variable") {
+    const spinner = ora(`Processing`).start();
+
+    try {
+      await createVariableProduct(
+        () => getVariableProductData(inputs),
+        () => getVariantData(inputs),
         parseInt(inputs.numOfProducts),
       );
       spinner.succeed("Products Created ✅");
