@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 const ora = require("ora");
-const { createProduct } = require("../../services/createProduct");
+const { createProduct } = require("../../services/productService");
 const { getSimpleProductData } = require("../data/productData");
 
 async function handleProduct() {

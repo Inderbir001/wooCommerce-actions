@@ -8,33 +8,33 @@ Built for **automation, testing, and bulk operations**, this tool simulates real
 
 ## ✨ Features
 
-* 🛒 Create WooCommerce Orders
-* 📦 Create WooCommerce Products
-* 🔁 Bulk Order Creation (load testing)
-* 🎲 Random Data Generation using Faker
-* 🎯 Interactive CLI (menu-based)
-* ⚡ Spinner feedback with Ora
-* 🎨 Styled terminal output (Chalk + Figlet)
+- 🛒 Create WooCommerce Orders
+- 📦 Create WooCommerce Products
+- 🔁 Bulk Order Creation (load testing)
+- 🎲 Random Data Generation using Faker
+- 🎯 Interactive CLI (menu-based)
+- ⚡ Spinner feedback with Ora
+- 🎨 Styled terminal output (Chalk + Figlet)
 
 ---
 
 ## 🧠 Use Cases
 
-* QA Testing (order + product flows)
-* Load testing WooCommerce APIs
-* Automation for shipping & logistics testing
-* Simulating real-world store activity
+- QA Testing (order + product flows)
+- Load testing WooCommerce APIs
+- Automation for shipping & logistics testing
+- Simulating real-world store activity
 
 ---
 
 ## 🛠️ Tech Stack
 
-* Node.js
-* Axios (API calls)
-* Inquirer (CLI interaction)
-* Faker (test data generation)
-* Ora (loading spinner)
-* Chalk & Figlet (UI styling)
+- Node.js
+- Axios (API calls)
+- Inquirer (CLI interaction)
+- Faker (test data generation)
+- Ora (loading spinner)
+- Chalk & Figlet (UI styling)
 
 ---
 
@@ -46,7 +46,7 @@ woo-cli/
 │   └── index.js          # CLI entry point
 ├── services/
 │   ├── orderService.js   # Order API logic
-│   └── createProduct.js  # Product API logic
+│   └── productService.js  # Product API logic
 ├── utils/
 │   └── config.js         # Environment config
 ├── .env                  # API credentials
@@ -114,10 +114,10 @@ woo-cli
 
 ## 🛒 Create Orders
 
-* Enter customer details
-* Provide product ID
-* Choose quantity
-* Set number of orders
+- Enter customer details
+- Provide product ID
+- Choose quantity
+- Set number of orders
 
 👉 Supports **bulk order creation**
 
@@ -125,12 +125,11 @@ woo-cli
 
 ## 📦 Create Products
 
-* Automatically generates:
-
-  * Product name
-  * Description
-  * SKU
-  * Price
+- Automatically generates:
+  - Product name
+  - Description
+  - SKU
+  - Price
 
 👉 Uses Faker for realistic test data
 
@@ -149,19 +148,19 @@ woo-cli
 
 ## ⚠️ Important Notes
 
-* Do NOT commit `.env` file
-* Do NOT push `node_modules`
-* Ensure WooCommerce API keys are valid
+- Do NOT commit `.env` file
+- Do NOT push `node_modules`
+- Ensure WooCommerce API keys are valid
 
 ---
 
 ## 🚀 Future Improvements
 
-* 🔗 Auto create product → use in order
-* 📊 Progress bar for bulk operations
-* 📁 CSV import for bulk data
-* 🔁 Retry failed API calls
-* 🧪 Full automation testing workflows
+- 🔗 Auto create product → use in order
+- 📊 Progress bar for bulk operations
+- 📁 CSV import for bulk data
+- 🔁 Retry failed API calls
+- 🧪 Full automation testing workflows
 
 ---
 
