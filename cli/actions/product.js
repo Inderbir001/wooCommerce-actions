@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const ora = require("ora");
-const { faker } = require("@faker-js/faker");
 const { createProduct } = require("../../services/createProduct");
+const { getSimpleProductData } = require("../data/productData");
 
 async function handleProduct() {
   const inputs = await inquirer.prompt([
@@ -25,28 +25,16 @@ async function handleProduct() {
     },
   ]);
 
-  const getSimpleProductData = () => ({
-    name: faker.commerce.productName(),
-    type: "simple",
-    status: "publish",
-    regular_price: inputs.price,
-    description: faker.commerce.productDescription(),
-    sku: faker.string.uuid(),
-    weight: String(inputs.weight),
-    dimensions: {
-      length: String(inputs.length),
-      width: String(inputs.width),
-      height: String(inputs.height),
-    },
-    manage_stock: true,
-    stock_quantity: 111111,
-  });
-
   if (inputs.type === "simple") {
-    const spinner = ora(`Creating ${inputs.numOfProducts} products...`).start();
+    const spinner = ora(
+      `Creating ${inputs.numOfProducts} simple products...`,
+    ).start();
 
     try {
-      await createProduct(getSimpleProductData, parseInt(inputs.numOfProducts));
+      await createProduct(
+        () => getSimpleProductData(inputs),
+        parseInt(inputs.numOfProducts),
+      );
       spinner.succeed("Products Created ✅");
     } catch (err) {
       spinner.fail("Failed ❌");

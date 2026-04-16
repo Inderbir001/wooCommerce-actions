@@ -8,12 +8,19 @@ const { handleOrder } = require("../cli/actions/order");
 const { handleProduct } = require("../cli/actions/product");
 
 console.log(
-  chalk.green(
-    figlet.textSync("Woo Actions", {
-      horizontalLayout: "full",
-    }),
+  chalk.greenBright(
+    figlet.textSync(
+      `
+  Woo Commerce Actions
+--------------------
+`,
+      {
+        horizontalLayout: "full",
+      },
+    ),
   ),
 );
+console.log(chalk.greenBright(" version 1.0.0 by inderbir\n"));
 
 async function startCLI() {
   const action = await showMainMenu();

@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const ora = require("ora");
-const { faker } = require("@faker-js/faker");
 const { createOrder } = require("../../services/orderService");
+const { orderData } = require("../data/orderData");
 
 async function handleOrder() {
   const inputs = await inquirer.prompt([
@@ -22,29 +22,10 @@ async function handleOrder() {
     },
   ]);
 
-  const orderData = {
-    status: "processing",
-    shipping: {
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
-      address_1: faker.location.streetAddress(),
-      city: faker.location.city(),
-      state: faker.location.state(),
-      postcode: faker.location.zipCode(),
-      country: "US",
-    },
-    line_items: [
-      {
-        product_id: parseInt(inputs.product),
-        quantity: parseInt(inputs.qty),
-      },
-    ],
-  };
-
   const spinner = ora(`Processing`).start();
 
   try {
-    await createOrder(orderData, parseInt(inputs.numOfOrders));
+    await createOrder(() => orderData(inputs), parseInt(inputs.numOfOrders));
     spinner.succeed("Orders Created Successfully ✅");
   } catch (err) {
     spinner.fail("Failed ❌");

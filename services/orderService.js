@@ -3,10 +3,11 @@ const config = require("../utils/config");
 
 async function createOrder(orderData, numOfOrders) {
   const results = [];
+  const payload = orderData();
   for (let i = 0; i <= numOfOrders; i++) {
     const response = await axios.post(
       `${config.baseUrl}/wp-json/wc/v3/orders`,
-      orderData,
+      payload,
       {
         auth: {
           username: config.key,
