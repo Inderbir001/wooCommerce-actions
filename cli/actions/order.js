@@ -25,7 +25,7 @@ async function handleOrder() {
   const spinner = ora(`Processing`).start();
 
   try {
-    await createOrder(() => orderData(inputs), parseInt(inputs.numOfOrders));
+    await createOrder(inputs, parseInt(inputs.numOfOrders));
     spinner.succeed("Orders Created Successfully ✅");
   } catch (err) {
     spinner.fail("Failed ❌");

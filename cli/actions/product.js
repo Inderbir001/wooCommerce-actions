@@ -32,27 +32,27 @@ async function handleProduct() {
     },
   ]);
 
+  // Simple Product
   if (inputs.type === "simple") {
     const spinner = ora(`Processing`).start();
 
     try {
-      await createProduct(
-        () => getSimpleProductData(inputs),
-        parseInt(inputs.numOfProducts),
-      );
+      await createProduct(inputs, parseInt(inputs.numOfProducts));
       spinner.succeed("Products Created ✅");
     } catch (err) {
       spinner.fail("Failed ❌");
       console.log(err.message);
     }
   }
+
+  // Variable Product
   if (inputs.type === "variable") {
     const spinner = ora(`Processing`).start();
 
     try {
       await createVariableProduct(
-        () => getVariableProductData(inputs),
-        () => getVariantData(inputs),
+        inputs,
+        inputs,
         parseInt(inputs.numOfProducts),
       );
       spinner.succeed("Products Created ✅");

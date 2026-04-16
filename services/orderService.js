@@ -1,10 +1,10 @@
 const axios = require("axios");
 const config = require("../utils/config");
-
-async function createOrder(orderData, numOfOrders) {
+const { orderData } = require("../cli/data/orderData");
+async function createOrder(inputs, numOfOrders) {
   const results = [];
-  const payload = orderData();
-  for (let i = 0; i <= numOfOrders; i++) {
+  for (let i = 0; i < numOfOrders; i++) {
+    const payload = orderData(inputs);
     const response = await axios.post(
       `${config.baseUrl}/wp-json/wc/v3/orders`,
       payload,

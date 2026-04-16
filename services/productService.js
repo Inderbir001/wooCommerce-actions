@@ -1,11 +1,16 @@
 const axios = require("axios");
 const config = require("../utils/config");
+const {
+  getSimpleProductData,
+  getVariableProductData,
+  getVariantData,
+} = require("../cli/data/productData");
 
-async function createProduct(getSimpleProductData, numOfProducts) {
+async function createProduct(simpleProductInput, numOfProducts) {
   const productResults = [];
 
   for (let i = 0; i < numOfProducts; i++) {
-    const payload = getSimpleProductData();
+    const payload = getSimpleProductData(simpleProductInput);
 
     const response = await axios.post(
       `${config.baseUrl}/wp-json/wc/v3/products`,
@@ -26,14 +31,14 @@ async function createProduct(getSimpleProductData, numOfProducts) {
 }
 
 const createVariableProduct = async function (
-  getVariableData,
-  getVariantData,
+  variableInput,
+  variantInput,
   numOfProducts,
 ) {
   const result = [];
   for (let i = 0; i < numOfProducts; i++) {
-    const payload = getVariableData();
-    const variantPayload = getVariantData();
+    const payload = getVariableProductData(variableInput);
+    const variantPayload = getVariantData(variantInput);
     const variableRes = await axios.post(
       `${config.baseUrl}/wp-json/wc/v3/products`,
       payload,
@@ -64,6 +69,7 @@ const createVariableProduct = async function (
       `,
     );
   }
+  return result;
 };
 
 module.exports = { createProduct, createVariableProduct };
