@@ -15,9 +15,11 @@ router.post("/create-simple-product", async (req, res) => {
       data: result,
     });
   } catch (err) {
+    console.log("Error: ", err.res?.data || err.message);
+
     res.status(500).json({
       success: false,
-      message: err.message,
+      message: err.res?.message || err.message,
     });
   }
 });
