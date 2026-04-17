@@ -121,6 +121,46 @@ Upon starting the CLI, you will be presented with an interactive menu:
 
 > Automatically creates variants with "Colour" and "Size" attributes for variable products.
 
+### success order curl:
+
+inderbir-singh@inderbir-singh-ThinkPad-E14-Gen-2:~$ curl -X POST http://localhost:5000/products/create -H "Content-Type: application/json" -d '{ order
+"product": 119,
+"qty": 2,
+"count": 1
+}'
+
+### success simple product curl:
+
+inderbir-singh@inderbir-singh-ThinkPad-E14-Gen-2:~$ curl -X POST http://localhost:5000/products/create -H "Content-Type: application/json" -d '{
+"price": "100",
+"weight": "1",
+"length": "10",
+"width": "10",
+"height": "10",
+"count": 1
+}'
+
+### success variable product curl :
+
+inderbir-singh@inderbir-singh-ThinkPad-E14-Gen-2:~$ curl -X POST http://localhost:5000/products/create-variable-product -H "Content-Type: application/json" -d '{
+"variableInput": {
+"price": "200",
+"weight": "2",
+"length": "20",
+"width": "20",
+"height": "20"
+},
+"variantInput": {
+"price": "200",
+"weight": "2",
+"length": "20",
+"width": "20",
+"height": "20"
+},
+"count": 1
+}'
+
+
 ## ⚠️ Important Notes
 
 - **Security:** Do NOT commit your `.env` file. Ensure it is included in your `.gitignore`.

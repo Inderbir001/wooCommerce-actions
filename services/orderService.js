@@ -1,6 +1,8 @@
 const axios = require("axios");
 const config = require("../utils/config");
+
 const { orderData } = require("../cli/data/orderData");
+
 async function createOrder(inputs, numOfOrders) {
   const results = [];
   for (let i = 0; i < numOfOrders; i++) {
@@ -21,6 +23,7 @@ async function createOrder(inputs, numOfOrders) {
       response.data.id,
     );
   }
+
   return results;
 }
 
