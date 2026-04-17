@@ -6,6 +6,7 @@ export default function CreateOrder() {
   const [qty, setQuantity] = useState("");
   const [count, setNumOfOrders] = useState("");
   const [loading, setLoading] = useState(false);
+  const [createdOrders, setCreatedOrders] = useState([]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -17,7 +18,7 @@ export default function CreateOrder() {
         count: Number(count),
       });
       console.log(res.data);
-      alert("Orders Got created... ✅");
+      setCreatedOrders(res.data.data);
     } catch (err) {
       console.log(err);
       alert("Order creation Failed... ❌");
@@ -50,6 +51,21 @@ export default function CreateOrder() {
       <button onClick={handleSubmit} disabled={loading}>
         {loading ? "Creating Orders.." : "Create Order"}
       </button>
+
+      {createdOrders.length > 0 && (
+        <div>
+          <h3>Created Orders</h3>
+          <ul>
+            {createdOrders.map((createdOrders) => (
+              <li key={createdOrders.id}>
+                {" "}
+                Order Id : {createdOrders.id} | Status :
+                {createdOrders.status}{" "}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

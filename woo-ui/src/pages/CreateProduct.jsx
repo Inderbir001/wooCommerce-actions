@@ -10,6 +10,7 @@ export function CreateSimpleProduct() {
   const [height, setHeight] = useState("");
   const [count, setNumOfOrders] = useState("");
   const [loading, setLoading] = useState(false);
+  const [createdProducts, setCreatedProducts] = useState([]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -23,8 +24,9 @@ export function CreateSimpleProduct() {
         height: Number(height),
         count: Number(count),
       });
+
+      setCreatedProducts(response.data.data);
       console.log(response.data);
-      alert("Product Creation Successful");
     } catch (err) {
       console.log(err);
       alert("Product Creation Failed");
@@ -81,6 +83,19 @@ export function CreateSimpleProduct() {
       <button onClick={handleSubmit} disabled={loading}>
         {loading ? "Creating Products" : "Create"}
       </button>
+      {createdProducts.length > 0 && (
+        <div>
+          <h3>Created Products:</h3>
+          <ul>
+            {createdProducts.map((createdProducts) => (
+              <li key={createdProducts.id}>
+                Product ID: {createdProducts.id} | Status:{" "}
+                {createdProducts.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
@@ -93,6 +108,7 @@ export function CreateVariableProduct() {
   const [height, setHeight] = useState("");
   const [count, setNumOfOrders] = useState("");
   const [loading, setLoading] = useState(false);
+  const [createdProducts, setCreatedProducts] = useState([]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -107,7 +123,7 @@ export function CreateVariableProduct() {
         count: Number(count),
       });
       console.log(response.data);
-      alert("Product Creation Successful");
+      setCreatedProducts(response.data.data);
     } catch (err) {
       console.log(err);
       alert("Product Creation Failed");
@@ -164,6 +180,18 @@ export function CreateVariableProduct() {
       <button onClick={handleSubmit} disabled={loading}>
         {loading ? "Creating Products" : "Create"}
       </button>
+      {createdProducts.length > 0 && (
+        <div>
+          <h3>Created Variable Products:</h3>
+          <ul>
+            {createdProducts.map((createdProducts) => (
+              <li key={createdProducts.id}>
+                Product ID: {createdProducts.id} | Name: {createdProducts.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
