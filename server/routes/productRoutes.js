@@ -8,7 +8,7 @@ const {
 
 router.post("/create-simple-product", async (req, res) => {
   try {
-    const result = await createProduct(req.body, req.body.count);
+    const result = await createProduct(req.body, Number(req.body.count) || 1);
 
     res.json({
       success: true,
@@ -27,7 +27,7 @@ router.post("/create-variable-product", async (req, res) => {
     const result = await createVariableProduct(
       req.body,
       req.body,
-      req.body.count,
+      Number(req.body.count) || 1,
     );
 
     res.json({

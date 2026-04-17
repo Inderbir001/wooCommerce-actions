@@ -4,11 +4,6 @@ const {
   createProduct,
   createVariableProduct,
 } = require("../../services/productService");
-const {
-  getSimpleProductData,
-  getVariableProductData,
-  getVariantData,
-} = require("../data/productData");
 
 async function handleProduct() {
   const inputs = await inquirer.prompt([
