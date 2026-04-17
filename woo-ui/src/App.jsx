@@ -48,7 +48,7 @@ function App() {
 
         {/* BOTTOM (VERSION) */}
         <div className="text-sm text-gray-400 border-t border-gray-700 pt-4">
-          <p>Version 3.0.0</p>
+          <p>Version 3.0.1</p>
           <p className="text-gray-500">by Inder</p>
         </div>
       </div>
