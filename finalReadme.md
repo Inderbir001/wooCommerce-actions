@@ -153,27 +153,6 @@ curl -X POST http://localhost:5000/products/create-simple-product -H "Content-Ty
   "count": 1
 }'
 ```
-**create variable product:**
-
-```bash
-curl -X POST http://localhost:5000/products/create-variable-product -H "Content-Type: application/json" -d '{
-"variableInput": {
-"price": "200",
-"weight": "2",
-"length": "20",
-"width": "20",
-"height": "20"
-},
-"variantInput": {
-"price": "200",
-"weight": "2",
-"length": "20",
-"width": "20",
-"height": "20"
-},
-"count": 1
-}'
-```
 
 ## ⚠️ Important Notes
 
