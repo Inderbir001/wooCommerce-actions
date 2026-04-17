@@ -66,7 +66,7 @@ export function CreateSimpleProduct() {
       <button
         onClick={handleSubmit}
         disabled={loading}
-        className="btn-success w-full"
+        className="btn-primary w-full"
       >
         {loading ? "Creating..." : "Create Products"}
       </button>
@@ -140,7 +140,7 @@ export function CreateVariableProduct() {
       <button
         onClick={handleSubmit}
         disabled={loading}
-        className="btn-purple w-full"
+        className="btn-primary w-full"
       >
         {loading ? "Creating..." : "Create Variable Products"}
       </button>

@@ -23,32 +23,32 @@ function App() {
                 active === "orders" ? "bg-blue-600" : "hover:bg-gray-700"
               }`}
             >
-              Orders
+              Create Orders
             </button>
 
             <button
               onClick={() => setActive("simple")}
               className={`block w-full text-left px-3 py-2 rounded ${
-                active === "simple" ? "bg-green-600" : "hover:bg-gray-700"
+                active === "simple" ? "bg-blue-600" : "hover:bg-gray-700"
               }`}
             >
-              Simple Product
+              Create Simple Products
             </button>
 
             <button
               onClick={() => setActive("variable")}
               className={`block w-full text-left px-3 py-2 rounded ${
-                active === "variable" ? "bg-purple-600" : "hover:bg-gray-700"
+                active === "variable" ? "bg-blue-600" : "hover:bg-gray-700"
               }`}
             >
-              Variable Product
+              Create Variable Products
             </button>
           </div>
         </div>
 
         {/* BOTTOM (VERSION) */}
         <div className="text-sm text-gray-400 border-t border-gray-700 pt-4">
-          <p>Version 3.0.1</p>
+          <p>Version 3.0.2</p>
           <p className="text-gray-500">by Inder</p>
         </div>
       </div>
