@@ -4,11 +4,13 @@ import { createOrder } from "../services/api";
 export default function CreateOrder() {
   const [product, setProduct] = useState("");
   const [qty, setQuantity] = useState("");
-  const [count, setNumOfOrders] = useState("");
+  const [count, setCount] = useState("");
   const [loading, setLoading] = useState(false);
   const [createdOrders, setCreatedOrders] = useState([]);
 
   const handleSubmit = async () => {
+    if (!product || !qty || !count) return alert("Fill all fields");
+
     setLoading(true);
 
     try {
@@ -17,53 +19,64 @@ export default function CreateOrder() {
         qty: Number(qty),
         count: Number(count),
       });
-      console.log(res.data);
-      setCreatedOrders(res.data.data);
+
+      setCreatedOrders(res.data.data || []);
     } catch (err) {
-      console.log(err);
-      alert("Order creation Failed... ❌");
+      console.error(err);
+      alert("Order creation failed ❌");
     }
 
     setLoading(false);
   };
+
   return (
-    <div>
-      <h2>Create an Order</h2>
+    <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
+      <h2 className="text-2xl font-semibold mb-5">Create Orders</h2>
 
-      <input
-        placeholder="Product Id"
-        value={product}
-        onChange={(e) => setProduct(e.target.value)}
-      />
+      {/* INPUTS */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <input
+          className="input"
+          placeholder="Product ID"
+          value={product}
+          onChange={(e) => setProduct(e.target.value)}
+        />
+        <input
+          className="input"
+          placeholder="Quantity"
+          value={qty}
+          onChange={(e) => setQuantity(e.target.value)}
+        />
+        <input
+          className="input"
+          placeholder="No. of Orders"
+          value={count}
+          onChange={(e) => setCount(e.target.value)}
+        />
+      </div>
 
-      <input
-        placeholder="Quantity"
-        value={qty}
-        onChange={(e) => setQuantity(e.target.value)}
-      />
-
-      <input
-        placeholder="Number of Orders "
-        value={count}
-        onChange={(e) => setNumOfOrders(e.target.value)}
-      />
-
-      <button onClick={handleSubmit} disabled={loading}>
-        {loading ? "Creating Orders.." : "Create Order"}
+      {/* BUTTON */}
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="btn-primary w-full"
+      >
+        {loading ? "Creating..." : "Create Orders"}
       </button>
 
+      {/* RESULTS */}
       {createdOrders.length > 0 && (
-        <div>
-          <h3>Created Orders</h3>
-          <ul>
-            {createdOrders.map((createdOrders) => (
-              <li key={createdOrders.id}>
-                {" "}
-                Order Id : {createdOrders.id} | Status :
-                {createdOrders.status}{" "}
-              </li>
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-3">Created Orders</h3>
+
+          <div className="space-y-2">
+            {createdOrders.map((order) => (
+              <div key={order.id} className="card-row">
+                <span>Order #{order.id}</span>
+                <span className="text-green-400">{order.status}</span>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </div>

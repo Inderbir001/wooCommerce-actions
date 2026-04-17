@@ -1,6 +1,19 @@
 import { useState } from "react";
-import { createSimpleProduct } from "../services/api";
-import { createVariableProduct } from "../services/api";
+import { createSimpleProduct, createVariableProduct } from "../services/api";
+
+/* REUSABLE INPUT */
+function Input({ placeholder, value, setValue }) {
+  return (
+    <input
+      className="input"
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
+  );
+}
+
+/* ================= SIMPLE PRODUCT ================= */
 
 export function CreateSimpleProduct() {
   const [price, setPrice] = useState("");
@@ -8,15 +21,18 @@ export function CreateSimpleProduct() {
   const [length, setLength] = useState("");
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
-  const [count, setNumOfOrders] = useState("");
+  const [count, setCount] = useState("");
   const [loading, setLoading] = useState(false);
   const [createdProducts, setCreatedProducts] = useState([]);
 
   const handleSubmit = async () => {
+    if (!price || !weight || !length || !width || !height || !count)
+      return alert("Fill all fields");
+
     setLoading(true);
 
     try {
-      const response = await createSimpleProduct({
+      const res = await createSimpleProduct({
         price: String(price),
         weight: Number(weight),
         length: Number(length),
@@ -25,80 +41,53 @@ export function CreateSimpleProduct() {
         count: Number(count),
       });
 
-      setCreatedProducts(response.data.data);
-      console.log(response.data);
+      setCreatedProducts(res.data.data || []);
     } catch (err) {
-      console.log(err);
-      alert("Product Creation Failed");
+      console.error(err);
+      alert("Simple product creation failed ❌");
     }
+
     setLoading(false);
   };
 
   return (
-    <div>
-      <p></p>
-      <h2>Create Simple Product</h2>
-      <input
-        placeholder="Enter the price"
-        value={price}
-        onChange={(e) => {
-          setPrice(e.target.value);
-        }}
-      />
-      <input
-        placeholder="Enter the weight"
-        value={weight}
-        onChange={(e) => {
-          setWeight(e.target.value);
-        }}
-      />
-      <input
-        placeholder="Enter the length"
-        value={length}
-        onChange={(e) => {
-          setLength(e.target.value);
-        }}
-      />{" "}
-      <input
-        placeholder="Enter the width"
-        value={width}
-        onChange={(e) => {
-          setWidth(e.target.value);
-        }}
-      />{" "}
-      <input
-        placeholder="Enter the height"
-        value={height}
-        onChange={(e) => {
-          setHeight(e.target.value);
-        }}
-      />
-      <input
-        placeholder="Enter the number of products you want to create?"
-        value={count}
-        onChange={(e) => {
-          setNumOfOrders(e.target.value);
-        }}
-      />
-      <button onClick={handleSubmit} disabled={loading}>
-        {loading ? "Creating Products" : "Create"}
+    <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
+      <h2 className="text-2xl font-semibold mb-5">Create Simple Product</h2>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+        <Input placeholder="Price" value={price} setValue={setPrice} />
+        <Input placeholder="Weight" value={weight} setValue={setWeight} />
+        <Input placeholder="Length" value={length} setValue={setLength} />
+        <Input placeholder="Width" value={width} setValue={setWidth} />
+        <Input placeholder="Height" value={height} setValue={setHeight} />
+        <Input placeholder="Count" value={count} setValue={setCount} />
+      </div>
+
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="btn-success w-full"
+      >
+        {loading ? "Creating..." : "Create Products"}
       </button>
+
       {createdProducts.length > 0 && (
-        <div>
-          <h3>Created Products:</h3>
-          <ul>
-            {createdProducts.map((createdProducts) => (
-              <li key={createdProducts.id}>
-                Product ID: {createdProducts.id} | Status:{" "}
-                {createdProducts.name}
-              </li>
-            ))}
-          </ul>
+        <div className="mt-6 space-y-2">
+          <h3 className="font-semibold">Created Products</h3>
+
+          {createdProducts.map((p) => (
+            <div key={p.id} className="card-row">
+              <span>#{p.id}</span>
+              <span className="text-blue-400">{p.name}</span>
+            </div>
+          ))}
         </div>
       )}
     </div>
   );
 }
+
+/* ================= VARIABLE PRODUCT ================= */
 
 export function CreateVariableProduct() {
   const [price, setPrice] = useState("");
@@ -106,15 +95,18 @@ export function CreateVariableProduct() {
   const [length, setLength] = useState("");
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
-  const [count, setNumOfOrders] = useState("");
+  const [count, setCount] = useState("");
   const [loading, setLoading] = useState(false);
   const [createdProducts, setCreatedProducts] = useState([]);
 
   const handleSubmit = async () => {
+    if (!price || !weight || !length || !width || !height || !count)
+      return alert("Fill all fields");
+
     setLoading(true);
 
     try {
-      const response = await createVariableProduct({
+      const res = await createVariableProduct({
         price: String(price),
         weight: Number(weight),
         length: Number(length),
@@ -122,74 +114,47 @@ export function CreateVariableProduct() {
         height: Number(height),
         count: Number(count),
       });
-      console.log(response.data);
-      setCreatedProducts(response.data.data);
+
+      setCreatedProducts(res.data.data || []);
     } catch (err) {
-      console.log(err);
-      alert("Product Creation Failed");
+      console.error(err);
+      alert("Variable product creation failed ❌");
     }
+
     setLoading(false);
   };
 
   return (
-    <div>
-      <p></p>
-      <h2>Create Variable Product</h2>
-      <input
-        placeholder="Enter the price"
-        value={price}
-        onChange={(e) => {
-          setPrice(e.target.value);
-        }}
-      />
-      <input
-        placeholder="Enter the weight"
-        value={weight}
-        onChange={(e) => {
-          setWeight(e.target.value);
-        }}
-      />
-      <input
-        placeholder="Enter the length"
-        value={length}
-        onChange={(e) => {
-          setLength(e.target.value);
-        }}
-      />{" "}
-      <input
-        placeholder="Enter the width"
-        value={width}
-        onChange={(e) => {
-          setWidth(e.target.value);
-        }}
-      />{" "}
-      <input
-        placeholder="Enter the height"
-        value={height}
-        onChange={(e) => {
-          setHeight(e.target.value);
-        }}
-      />
-      <input
-        placeholder="Enter the number of products you want to create?"
-        value={count}
-        onChange={(e) => {
-          setNumOfOrders(e.target.value);
-        }}
-      />
-      <button onClick={handleSubmit} disabled={loading}>
-        {loading ? "Creating Products" : "Create"}
+    <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
+      <h2 className="text-2xl font-semibold mb-5">Create Variable Product</h2>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+        <Input placeholder="Price" value={price} setValue={setPrice} />
+        <Input placeholder="Weight" value={weight} setValue={setWeight} />
+        <Input placeholder="Length" value={length} setValue={setLength} />
+        <Input placeholder="Width" value={width} setValue={setWidth} />
+        <Input placeholder="Height" value={height} setValue={setHeight} />
+        <Input placeholder="Count" value={count} setValue={setCount} />
+      </div>
+
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="btn-purple w-full"
+      >
+        {loading ? "Creating..." : "Create Variable Products"}
       </button>
+
       {createdProducts.length > 0 && (
-        <div>
-          <h3>Created Variable Products:</h3>
-          <ul>
-            {createdProducts.map((createdProducts) => (
-              <li key={createdProducts.id}>
-                Product ID: {createdProducts.id} | Name: {createdProducts.name}
-              </li>
-            ))}
-          </ul>
+        <div className="mt-6 space-y-2">
+          <h3 className="font-semibold">Created Variable Products</h3>
+
+          {createdProducts.map((p) => (
+            <div key={p.id} className="card-row">
+              <span>#{p.id}</span>
+              <span className="text-purple-400">{p.name}</span>
+            </div>
+          ))}
         </div>
       )}
     </div>
