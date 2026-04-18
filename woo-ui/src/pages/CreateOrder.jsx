@@ -60,9 +60,12 @@ export default function CreateOrder({ addLog }) {
       <button
         onClick={handleSubmit}
         disabled={loading}
-        className="btn-primary w-full"
+        className="btn-primary w-full flex items-center justify-center gap-2"
       >
-        {loading ? "Creating..." : "Create Orders"}
+        {loading && (
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+        )}
+        <span>{loading ? "Creating..." : "Create Orders"}</span>
       </button>
 
       {/* RESULTS */}

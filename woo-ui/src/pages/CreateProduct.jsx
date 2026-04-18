@@ -70,7 +70,14 @@ export function CreateSimpleProduct({ addLog }) {
         <Input placeholder="Count" value={count} setValue={setCount} />
       </div>
 
-      <button onClick={handleSubmit} className="btn-primary w-full">
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="btn-primary w-full flex items-center justify-center gap-2"
+      >
+        {loading && (
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+        )}{" "}
         {loading ? "Creating..." : "Create"}
       </button>
 
@@ -116,7 +123,12 @@ export function RetrieveProduct({ addLog }) {
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
-    if (!productId) return alert("Enter Product ID");
+    if (!productId) {
+      setError("Enter Product ID");
+      return;
+    }
+
+    if (loading) return;
 
     setLoading(true);
     setError("");
@@ -126,8 +138,9 @@ export function RetrieveProduct({ addLog }) {
         productId: Number(productId),
       });
 
-      setProduct(result.data.data);
-      addLog(` Retrieved product ID ${productId}`);
+      const data = result?.data?.data;
+      setProduct(data);
+      addLog(`Retrieved product ID ${productId}`);
     } catch (err) {
       console.error(err);
       setError("Failed to fetch product ❌");
@@ -140,9 +153,10 @@ export function RetrieveProduct({ addLog }) {
     <div className="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col h-full">
       <h2 className="text-2xl font-semibold mb-5">Retrieve Product Data</h2>
 
-      <div className="flex gap-3 mb-4">
+      {/* INPUT + BUTTON (FIXED) */}
+      <div className="mb-4 flex flex-col gap-3">
         <input
-          className="input flex-1"
+          className="input w-full"
           placeholder="Enter Product ID"
           value={productId}
           onChange={(e) => setProductId(e.target.value)}
@@ -151,16 +165,21 @@ export function RetrieveProduct({ addLog }) {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="btn-primary px-6"
+          className="btn-primary w-full flex items-center justify-center gap-2"
         >
-          {loading ? "Fetching..." : "Fetch"}
+          {loading && (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          )}
+          <span>{loading ? "Fetching..." : "Fetch"}</span>
         </button>
       </div>
 
+      {/* ERROR */}
       {error && <p className="text-red-400 mb-4">{error}</p>}
 
+      {/* RESULT */}
       {product && (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 animate-fadeIn">
           {/* SUMMARY */}
           <div className="bg-gray-900 p-4 rounded-xl border border-gray-700">
             <div className="flex justify-between mb-2">
@@ -241,7 +260,14 @@ export function CreateVariableProduct({ addLog }) {
         <Input placeholder="Count" value={count} setValue={setCount} />
       </div>
 
-      <button onClick={handleSubmit} className="btn-primary w-full">
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="btn-primary w-full flex items-center justify-center gap-2"
+      >
+        {loading && (
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+        )}{" "}
         {loading ? "Creating..." : "Create"}
       </button>
 
