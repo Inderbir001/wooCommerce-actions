@@ -72,4 +72,27 @@ const createVariableProduct = async function (
   return result;
 };
 
-module.exports = { createProduct, createVariableProduct };
+const retrieveProductService = async function (productId) {
+  try {
+    const response = await axios.get(
+      `${config.baseUrl}/wp-json/wc/v3/products/${productId}`,
+      {
+        auth: {
+          username: config.key,
+          password: config.secret,
+        },
+      },
+    );
+
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err.data?.response?.message || err.message);
+  }
+};
+
+module.exports = {
+  createProduct,
+  createVariableProduct,
+  retrieveProductService,
+};

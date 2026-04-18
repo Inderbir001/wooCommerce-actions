@@ -5,7 +5,7 @@ const figlet = require("figlet");
 
 const { showMainMenu } = require("../cli/mainMenu");
 const { handleOrder } = require("../cli/actions/order");
-const { handleProduct } = require("../cli/actions/product");
+const { handleProduct, retrieveProduct } = require("../cli/actions/product");
 
 console.log(
   chalk.blue(
@@ -15,7 +15,7 @@ console.log(
 
 `,
       {
-        horizontalLayout: "full",
+        horizontalLayout: "default",
       },
     ),
   ),
@@ -29,6 +29,8 @@ async function startCLI() {
     await handleOrder();
   } else if (action === "product") {
     await handleProduct();
+  } else if (action === "retrieveProduct") {
+    await retrieveProduct();
   } else {
     console.log("👋 Exiting...");
     process.exit();

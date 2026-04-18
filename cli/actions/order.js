@@ -1,7 +1,6 @@
 const inquirer = require("inquirer");
 const ora = require("ora");
 const { createOrder } = require("../../services/orderService");
-const { orderData } = require("../data/orderData");
 
 async function handleOrder() {
   const inputs = await inquirer.prompt([

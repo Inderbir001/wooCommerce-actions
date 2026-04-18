@@ -9,7 +9,8 @@ async function showMainMenu() {
       choices: [
         { name: "1. Create Order", value: "order" },
         { name: "2. Create Product", value: "product" },
-        { name: "3. Exit", value: "exit" },
+        { name: "3. Retrieve Product", value: "retrieveProduct" },
+        { name: "4. Exit", value: "exit" },
       ],
     },
   ]);

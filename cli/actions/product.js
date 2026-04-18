@@ -3,6 +3,7 @@ const ora = require("ora");
 const {
   createProduct,
   createVariableProduct,
+  retrieveProductService,
 } = require("../../services/productService");
 
 async function handleProduct() {
@@ -58,4 +59,26 @@ async function handleProduct() {
   }
 }
 
-module.exports = { handleProduct };
+async function retrieveProduct() {
+  const inputs = await inquirer.prompt([
+    {
+      type: "input",
+      name: "productId",
+      message: "Enter the Product Id of the product you want to retrieve: ",
+    },
+  ]);
+
+  if (inputs.productId) {
+    const spinner = ora(`Processing`).start();
+
+    try {
+      await retrieveProductService(Number(inputs.productId));
+      spinner.succeed("Product Data fetched Successfully... 👍");
+    } catch (error) {
+      spinner.fail("Product fetching Failed 👎 ");
+      console.log(error.message);
+    }
+  }
+}
+
+module.exports = { handleProduct, retrieveProduct };
