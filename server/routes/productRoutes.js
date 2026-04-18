@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   createProduct,
   createVariableProduct,
+  retrieveProductService,
 } = require("../../services/productService.js");
 
 router.post("/create-simple-product", async (req, res) => {
@@ -40,6 +41,31 @@ router.post("/create-variable-product", async (req, res) => {
     res.status(500).json({
       success: false,
       message: err.message,
+    });
+  }
+});
+
+router.get("/retrieve-product/:productId", async (req, res) => {
+  try {
+    const productId = req.params.productId;
+
+    if (!productId) {
+      return res.status(400).json({
+        success: false,
+        message: "Product ID is required",
+      });
+    }
+
+    const result = await retrieveProductService(productId);
+
+    res.json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    res.status(error.response?.status || 500).json({
+      success: false,
+      message: error.response?.data?.message || error.message,
     });
   }
 });
