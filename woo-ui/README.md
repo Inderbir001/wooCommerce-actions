@@ -1,16 +1,29 @@
-# React + Vite
+# WooCommerce Actions - Web UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This directory contains the React Web Interface (v3.0.0) for the **WooCommerce Actions** project. It provides a sleek, dark-themed Vite + React frontend powered by Tailwind CSS for easily performing WooCommerce operations via the backend API.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Create Orders:** Generate bulk orders dynamically.
+- **Create Products:** Easily generate Simple and Variable products.
+- **Retrieve Products:** Fetch product details by ID in a beautifully formatted JSON layout.
+- **Real-time Logs:** Visual feedback and logging integrated into the UI.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React (via Vite)
+- Tailwind CSS
+- Axios
 
-## Expanding the ESLint configuration
+## Development Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+_Note: Make sure the main backend API server (from the root directory) is running simultaneously to handle the requests._

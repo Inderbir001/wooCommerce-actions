@@ -1,72 +1,116 @@
-<h1 align="center">WooCommerce Actions (CLI & Web UI)</h1>
+<h1 align="center">WooCommerce Actions (CLI + Modern Web Dashboard)</h1>
 
 <p align="center">
-  <strong>A powerful Node.js toolset to automate WooCommerce orders and products creation using the REST API.</strong>
+  <strong>Automate WooCommerce orders & products with a powerful CLI and a sleek React dashboard.</strong>
 </p>
 
 <p align="center">
-  Built for automation, load testing, and bulk operations, this tool simulates real store activity using dynamic data. Version 3.0.0 now includes a streamlined React-based Web Interface alongside the traditional CLI!
+  Built for QA testing, load simulation, and automation workflows — now enhanced with a real-time interactive UI, improved UX, and activity tracking.
 </p>
+
+---
+
+## ✨ What’s New (v3.1+)
+
+- 🎯 **Modern Dashboard UI** with tab-based navigation
+- 📊 **Activity Panel** with real-time logs
+- ⏳ **Loading States & Animations** (spinners, transitions)
+- 🧠 **Improved UX** (inline validation, no alerts)
+- 🎨 **Refined UI/UX** with Tailwind (clean + responsive)
+- 🔄 Better state handling and component structure
 
 ---
 
 ## ✨ Features
 
-- **🛒 Create WooCommerce Orders:** Easily generate single or multiple orders with realistic fake customer data.
-- **📦 Create WooCommerce Products:** Automatically generate simple and variable products, including variations (e.g., Color and Size attributes).
-- **🔁 Bulk Operations:** Create bulk orders and products for load testing and populating your staging store.
-- **🎲 Dynamic Data Generation:** Utilizes `@faker-js/faker` to create realistic test data for orders and products.
-- **🖥️ React Web UI (v3.0.0):** A sleek, dark-themed Vite + React frontend powered by Tailwind CSS for easy point-and-click operations.
-- **🎯 Interactive CLI:** An intuitive, menu-based command-line interface powered by `inquirer`.
-- **⚡ Real-time Feedback:** Visual progress indicators using `ora` spinners in the CLI.
+### 🛒 Orders
+
+- Create single or bulk WooCommerce orders
+- Dynamic fake customer data using Faker
+- Real-time creation feedback
+
+### 📦 Products
+
+- Create **Simple Products**
+- Create **Variable Products** (with variations)
+- Bulk product generation for testing
+
+### 🔍 Retrieve Data
+
+- Fetch product details by ID
+- View structured summary + raw JSON
+- Scrollable JSON viewer for debugging
+
+### 📊 Activity Tracking
+
+- Real-time action logs
+- Displays recent operations (orders/products)
+- Helps track automation flow
+
+### ⚡ UX Enhancements
+
+- Button loaders with spinners
+- Smooth UI transitions
+- Disabled states during API calls
+- Error handling with inline messages
+
+### 🖥️ Dual Interface
+
+- CLI (interactive terminal)
+- Web UI (React dashboard)
+
+---
 
 ## 🧠 Use Cases
 
-- **QA Testing:** Quickly populate a staging store to test order and product flows.
-- **Load Testing:** Stress test WooCommerce APIs with bulk data creation.
-- **Logistics Simulation:** Automate shipping and logistics testing by simulating real-world store activity.
+- 🧪 QA Testing (populate staging stores)
+- 🚀 Load Testing WooCommerce APIs
+- 📦 Logistics & shipping simulation
+- 🛠️ Developer automation workflows
+
+---
 
 ## 🛠️ Tech Stack
 
-**Backend / CLI:**
+### Backend / CLI
 
-- Node.js & Express (API Server)
-- Axios (API requests)
-- Inquirer (Interactive CLI prompts)
-- Faker (Realistic test data generation)
-- Ora, Chalk & Figlet (Terminal styling & loading spinners)
+- Node.js & Express
+- Axios
+- Inquirer (CLI UX)
+- Faker (test data generation)
+- Ora, Chalk, Figlet (CLI styling)
 
-**Frontend (Web UI):**
+### Frontend (Web UI)
 
-- React (via Vite)
-- Tailwind CSS (Styling)
+- React (Vite)
+- Tailwind CSS
+- Component-based architecture
+- Async API handling
+
+---
 
 ## 📁 Project Structure
 
 ```text
 woo-cli/
 ├── bin/
-│   └── index.js           # CLI entry point
 ├── cli/
-│   ├── actions/           # Command handlers (order, product)
-│   ├── data/              # Data generation logic (faker)
-│   └── mainMenu.js        # Main CLI menu prompt
 ├── services/
-│   ├── orderService.js    # Order API logic
-│   └── productService.js  # Product API logic
 ├── utils/
-│   └── config.js          # Environment configuration
-├── woo-ui/                # React Web Interface (v3.0.0)
-│   ├── src/               # React Components & Pages
-│   ├── package.json       # UI Dependencies
-│   └── vite.config.js     # Vite configuration
-├── .env                   # API credentials (Not committed)
-└── package.json           # Backend/CLI Dependencies
+├── woo-ui/
+│   ├── src/
+│   │   ├── pages/        # Orders, Products, Retrieve
+│   │   ├── components/   # Reusable UI components
+│   │   └── App.jsx       # Main dashboard layout
+├── .env
+└── package.json
 ```
 
-## ⚙️ Setup Instructions
+---
 
-### 1. Clone the repository
+## ⚙️ Setup
+
+### 1. Clone repo
 
 ```bash
 git clone git@github.com:Inderbir001/wooCommerce-actions.git
@@ -75,21 +119,15 @@ cd wooCommerce-actions
 
 ### 2. Install dependencies
 
-You will need to install dependencies for both the backend/CLI and the Web UI.
-
 ```bash
-# Install Backend / CLI dependencies
 npm install
 
-# Install Web UI dependencies
 cd woo-ui
 npm install
 cd ..
 ```
 
-### 3. Setup environment variables
-
-Create a `.env` file in the root directory:
+### 3. Environment variables
 
 ```env
 BASE_URL=https://yourstore.com
@@ -97,89 +135,87 @@ CONSUMER_KEY=ck_xxxxx
 CONSUMER_SECRET=cs_xxxxx
 ```
 
+---
+
 ## 🚀 Usage
 
-### 🖥️ Web UI (Recommended)
-
-To launch the modern React Web Interface:
+### 🖥️ Web Dashboard (Recommended)
 
 ```bash
 cd woo-ui
 npm run dev
 ```
 
-_This will open the UI in your browser, where you can easily navigate between Orders, Simple Products, and Variable Products._
+👉 Features:
 
-### 💻 CLI Menu
+- Sidebar navigation (Orders / Products)
+- Tab-based workflows
+- Activity logs panel
+- Real-time UI feedback
 
-Run the CLI tool using npm from the root directory:
+---
+
+### 💻 CLI Mode
 
 ```bash
 npm start
 ```
 
-Upon starting the CLI, you will be presented with an interactive menu:
+Interactive menu:
 
 ```text
-? What do you want to do?
-  1. Create Order
-  2. Create Product
-  3. Exit
+1. Create Order
+2. Create Product
+3. Exit
 ```
 
-## 🔌 API / cURL Examples
+---
 
-If you are interacting directly with the local Express server (running on port 5000), you can use the following endpoints:
+## 🔌 API Examples
 
-**Create Order:**
+### Create Order
 
 ```bash
-curl -X POST http://localhost:5000/order/create-order -H "Content-Type: application/json" -d '{
-  "product": 119,
-  "qty": 2,
-  "count": 1
-}'
+curl -X POST http://localhost:5000/order/create-order \
+-H "Content-Type: application/json" \
+-d '{"product":119,"qty":2,"count":1}'
 ```
 
-**Create Simple Product:**
+### Create Simple Product
 
 ```bash
-curl -X POST http://localhost:5000/products/create-simple-product -H "Content-Type: application/json" -d '{
-  "price": "100",
-  "weight": "1",
-  "length": "10",
-  "width": "10",
-  "height": "10",
-  "count": 1
-}'
-```
-**create variable product:**
-
-```bash
-curl -X POST http://localhost:5000/products/create-variable-product -H "Content-Type: application/json" -d '{
-"variableInput": {
-"price": "200",
-"weight": "2",
-"length": "20",
-"width": "20",
-"height": "20"
-},
-"variantInput": {
-"price": "200",
-"weight": "2",
-"length": "20",
-"width": "20",
-"height": "20"
-},
-"count": 1
-}'
+curl -X POST http://localhost:5000/products/create-simple-product \
+-H "Content-Type: application/json" \
+-d '{"price":"100","weight":"1","length":"10","width":"10","height":"10","count":1}'
 ```
 
-## ⚠️ Important Notes
+---
 
-- **Security:** Do NOT commit your `.env` file. Ensure it is included in your `.gitignore`.
-- **Credentials:** Ensure your WooCommerce API keys (`CONSUMER_KEY` and `CONSUMER_SECRET`) are valid and have `Read/Write` permissions.
+## 🎯 Future Improvements
+
+- 🔍 Search & filtering in UI
+- 📈 Analytics dashboard
+- 🔄 Retry failed API actions
+- 🌐 Deployment (Vercel + Render)
+- 🧩 Custom hooks for cleaner logic
+
+---
+
+## ⚠️ Notes
+
+- Never commit `.env`
+- Use Read/Write WooCommerce API keys
+- Designed for testing/staging environments
+
+---
 
 ## 👨‍💻 Author
 
 **Inderbir Singh**
+
+---
+
+## ⭐ If you found this useful
+
+Give it a star on GitHub — it helps a lot!
+
