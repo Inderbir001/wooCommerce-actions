@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { createSimpleProduct, createVariableProduct } from "../services/api";
+import {
+  createSimpleProduct,
+  createVariableProduct,
+  retrieveProduct,
+} from "../services/api";
 
 /* REUSABLE INPUT */
 function Input({ placeholder, value, setValue }) {
@@ -23,13 +27,15 @@ export function CreateSimpleProduct() {
   const [height, setHeight] = useState("");
   const [count, setCount] = useState("");
   const [loading, setLoading] = useState(false);
-  const [createdProducts, setCreatedProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
 
   const handleSubmit = async () => {
     if (!price || !weight || !length || !width || !height || !count)
       return alert("Fill all fields");
 
     setLoading(true);
+    setError("");
 
     try {
       const res = await createSimpleProduct({
@@ -41,17 +47,16 @@ export function CreateSimpleProduct() {
         count: Number(count),
       });
 
-      setCreatedProducts(res.data.data || []);
+      setProducts(res.data.data || []);
     } catch (err) {
-      console.error(err);
-      alert("Simple product creation failed ❌");
+      setError("Failed ❌");
     }
 
     setLoading(false);
   };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
+    <div className="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col h-full">
       <h2 className="text-2xl font-semibold mb-5">Create Simple Product</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
@@ -63,24 +68,119 @@ export function CreateSimpleProduct() {
         <Input placeholder="Count" value={count} setValue={setCount} />
       </div>
 
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="btn-primary w-full"
-      >
-        {loading ? "Creating..." : "Create Products"}
+      <button onClick={handleSubmit} className="btn-primary w-full">
+        {loading ? "Creating..." : "Create"}
       </button>
 
-      {createdProducts.length > 0 && (
-        <div className="mt-6 space-y-2">
-          <h3 className="font-semibold">Created Products</h3>
+      {error && <p className="text-red-400 mt-4">{error}</p>}
 
-          {createdProducts.map((p) => (
+      {/* 🔥 SCROLLABLE RESULTS */}
+      {products.length > 0 && (
+        <div className="mt-6 bg-gray-900 p-4 rounded-xl h-[400px] overflow-y-auto">
+          <h3 className="mb-3 text-blue-400 font-semibold">Created Products</h3>
+
+          {products.map((p) => (
             <div key={p.id} className="card-row">
               <span>#{p.id}</span>
-              <span className="text-blue-400">{p.name}</span>
+              <span>{p.name}</span>
+              <span className="text-green-400">₹{p.price}</span>
             </div>
           ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function RetrieveProduct() {
+  const [productId, setProductId] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [product, setProduct] = useState(null);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async () => {
+    if (!productId) return alert("Enter Product ID");
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await retrieveProduct({
+        productId: Number(productId),
+      });
+
+      setProduct(result.data.data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to fetch product ❌");
+    }
+
+    setLoading(false);
+  };
+
+  return (
+    <div className="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col h-full">
+      <h2 className="text-2xl font-semibold mb-5">Retrieve Product Data</h2>
+
+      {/* INPUT */}
+      <div className="flex gap-3 mb-4">
+        <input
+          className="input flex-1"
+          placeholder="Enter Product ID"
+          value={productId}
+          onChange={(e) => setProductId(e.target.value)}
+        />
+
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="btn-primary px-6"
+        >
+          {loading ? "Fetching..." : "Fetch"}
+        </button>
+      </div>
+
+      {error && <p className="text-red-400 mb-4">{error}</p>}
+
+      {/* CONTENT AREA */}
+      {product && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-hidden">
+          {/* 🔹 LEFT: SUMMARY */}
+          <div className="bg-gray-900 p-4 rounded-xl space-y-2">
+            <h3 className="text-lg font-semibold text-blue-400 mb-2">
+              Product Summary
+            </h3>
+
+            <p>
+              <b>ID:</b> {product.id}
+            </p>
+            <p>
+              <b>Name:</b> {product.name}
+            </p>
+            <p>
+              <b>Price:</b> ₹{product.price}
+            </p>
+            <p>
+              <b>Stock:</b> {product.stock_quantity}
+            </p>
+            <p>
+              <b>Status:</b> {product.status}
+            </p>
+            <p>
+              <b>Type:</b> {product.type}
+            </p>
+          </div>
+
+          {/* 🔹 RIGHT: SCROLLABLE JSON */}
+          <div className="bg-black p-4 rounded-xl h-[500px] overflow-y-auto">
+            <h3 className="text-green-400 mb-3 font-semibold">
+              Full API Response
+            </h3>
+
+            <pre className="text-green-300 text-xs whitespace-pre-wrap leading-relaxed">
+              {JSON.stringify(product, null, 2)}
+            </pre>
+          </div>
         </div>
       )}
     </div>
@@ -97,13 +197,15 @@ export function CreateVariableProduct() {
   const [height, setHeight] = useState("");
   const [count, setCount] = useState("");
   const [loading, setLoading] = useState(false);
-  const [createdProducts, setCreatedProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
 
   const handleSubmit = async () => {
     if (!price || !weight || !length || !width || !height || !count)
       return alert("Fill all fields");
 
     setLoading(true);
+    setError("");
 
     try {
       const res = await createVariableProduct({
@@ -115,17 +217,16 @@ export function CreateVariableProduct() {
         count: Number(count),
       });
 
-      setCreatedProducts(res.data.data || []);
+      setProducts(res.data.data || []);
     } catch (err) {
-      console.error(err);
-      alert("Variable product creation failed ❌");
+      setError("Failed ❌");
     }
 
     setLoading(false);
   };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
+    <div className="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col h-full">
       <h2 className="text-2xl font-semibold mb-5">Create Variable Product</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
@@ -137,22 +238,24 @@ export function CreateVariableProduct() {
         <Input placeholder="Count" value={count} setValue={setCount} />
       </div>
 
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="btn-primary w-full"
-      >
-        {loading ? "Creating..." : "Create Variable Products"}
+      <button onClick={handleSubmit} className="btn-primary w-full">
+        {loading ? "Creating..." : "Create"}
       </button>
 
-      {createdProducts.length > 0 && (
-        <div className="mt-6 space-y-2">
-          <h3 className="font-semibold">Created Variable Products</h3>
+      {error && <p className="text-red-400 mt-4">{error}</p>}
 
-          {createdProducts.map((p) => (
+      {/* 🔥 SCROLLABLE */}
+      {products.length > 0 && (
+        <div className="mt-6 bg-gray-900 p-4 rounded-xl h-[400px] overflow-y-auto">
+          <h3 className="mb-3 text-purple-400 font-semibold">
+            Created Variable Products
+          </h3>
+
+          {products.map((p) => (
             <div key={p.id} className="card-row">
               <span>#{p.id}</span>
-              <span className="text-purple-400">{p.name}</span>
+              <span>{p.name}</span>
+              <span className="text-green-400">₹{p.price}</span>
             </div>
           ))}
         </div>

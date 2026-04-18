@@ -3,6 +3,7 @@ import CreateOrder from "./pages/CreateOrder";
 import {
   CreateSimpleProduct,
   CreateVariableProduct,
+  RetrieveProduct,
 } from "./pages/CreateProduct";
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
               Create Simple Products
             </button>
 
+            {/* ✅ FIXED */}
             <button
               onClick={() => setActive("variable")}
               className={`block w-full text-left px-3 py-2 rounded ${
@@ -42,6 +44,16 @@ function App() {
               }`}
             >
               Create Variable Products
+            </button>
+
+            {/* ✅ FIXED */}
+            <button
+              onClick={() => setActive("fetchProduct")}
+              className={`block w-full text-left px-3 py-2 rounded ${
+                active === "fetchProduct" ? "bg-blue-600" : "hover:bg-gray-700"
+              }`}
+            >
+              Fetch Product Details
             </button>
           </div>
         </div>
@@ -59,6 +71,7 @@ function App() {
           {active === "orders" && <CreateOrder />}
           {active === "simple" && <CreateSimpleProduct />}
           {active === "variable" && <CreateVariableProduct />}
+          {active === "fetchProduct" && <RetrieveProduct />}
         </div>
       </div>
     </div>
