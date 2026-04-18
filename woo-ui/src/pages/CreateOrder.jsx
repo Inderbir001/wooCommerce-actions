@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createOrder } from "../services/api";
 
-export default function CreateOrder() {
+export default function CreateOrder({ addLog }) {
   const [product, setProduct] = useState("");
   const [qty, setQuantity] = useState("");
   const [count, setCount] = useState("");
@@ -21,6 +21,7 @@ export default function CreateOrder() {
       });
 
       setCreatedOrders(res.data.data || []);
+      addLog(`Created ${res.data.data.length} orders`);
     } catch (err) {
       console.error(err);
       alert("Order creation failed ❌");

@@ -19,7 +19,7 @@ function Input({ placeholder, value, setValue }) {
 
 /* ================= SIMPLE PRODUCT ================= */
 
-export function CreateSimpleProduct() {
+export function CreateSimpleProduct({ addLog }) {
   const [price, setPrice] = useState("");
   const [weight, setWeight] = useState("");
   const [length, setLength] = useState("");
@@ -47,7 +47,9 @@ export function CreateSimpleProduct() {
         count: Number(count),
       });
 
-      setProducts(res.data.data || []);
+      const items = res.data.data || [];
+      setProducts(items);
+      addLog(`✅ Created ${items.length} simple products`);
     } catch (err) {
       setError("Failed ❌");
     }
@@ -74,25 +76,40 @@ export function CreateSimpleProduct() {
 
       {error && <p className="text-red-400 mt-4">{error}</p>}
 
-      {/* 🔥 SCROLLABLE RESULTS */}
       {products.length > 0 && (
         <div className="mt-6 bg-gray-900 p-4 rounded-xl h-[400px] overflow-y-auto">
           <h3 className="mb-3 text-blue-400 font-semibold">Created Products</h3>
 
-          {products.map((p) => (
-            <div key={p.id} className="card-row">
-              <span>#{p.id}</span>
-              <span>{p.name}</span>
-              <span className="text-green-400">₹{p.price}</span>
-            </div>
-          ))}
+          <div className="space-y-3">
+            {products.map((p) => (
+              <div
+                key={p.id}
+                className="bg-gray-800 p-4 rounded-xl border border-gray-700"
+              >
+                <div className="flex justify-between mb-2">
+                  <span className="font-semibold">Product #{p.id}</span>
+                  <span className="text-green-400">₹{p.price}</span>
+                </div>
+
+                <div className="text-sm text-gray-400 grid grid-cols-2 gap-2">
+                  <span>Name: {p.name}</span>
+                  <span>Status: {p.status}</span>
+                  <span>Type: {p.type}</span>
+                  <span>Stock: {p.stock_quantity}</span>
+                  <span>SKU: {p.sku || "N/A"}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-export function RetrieveProduct() {
+/* ================= RETRIEVE PRODUCT ================= */
+
+export function RetrieveProduct({ addLog }) {
   const [productId, setProductId] = useState("");
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState(null);
@@ -110,6 +127,7 @@ export function RetrieveProduct() {
       });
 
       setProduct(result.data.data);
+      addLog(` Retrieved product ID ${productId}`);
     } catch (err) {
       console.error(err);
       setError("Failed to fetch product ❌");
@@ -122,7 +140,6 @@ export function RetrieveProduct() {
     <div className="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col h-full">
       <h2 className="text-2xl font-semibold mb-5">Retrieve Product Data</h2>
 
-      {/* INPUT */}
       <div className="flex gap-3 mb-4">
         <input
           className="input flex-1"
@@ -142,42 +159,26 @@ export function RetrieveProduct() {
 
       {error && <p className="text-red-400 mb-4">{error}</p>}
 
-      {/* CONTENT AREA */}
       {product && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-hidden">
-          {/* 🔹 LEFT: SUMMARY */}
-          <div className="bg-gray-900 p-4 rounded-xl space-y-2">
-            <h3 className="text-lg font-semibold text-blue-400 mb-2">
-              Product Summary
-            </h3>
+        <div className="flex flex-col gap-4">
+          {/* SUMMARY */}
+          <div className="bg-gray-900 p-4 rounded-xl border border-gray-700">
+            <div className="flex justify-between mb-2">
+              <span className="font-semibold">{product.name}</span>
+              <span className="text-green-400">₹{product.price}</span>
+            </div>
 
-            <p>
-              <b>ID:</b> {product.id}
-            </p>
-            <p>
-              <b>Name:</b> {product.name}
-            </p>
-            <p>
-              <b>Price:</b> ₹{product.price}
-            </p>
-            <p>
-              <b>Stock:</b> {product.stock_quantity}
-            </p>
-            <p>
-              <b>Status:</b> {product.status}
-            </p>
-            <p>
-              <b>Type:</b> {product.type}
-            </p>
+            <div className="text-sm text-gray-400 grid grid-cols-2 gap-2">
+              <span>ID: {product.id}</span>
+              <span>Status: {product.status}</span>
+              <span>Type: {product.type}</span>
+              <span>Stock: {product.stock_quantity}</span>
+            </div>
           </div>
 
-          {/* 🔹 RIGHT: SCROLLABLE JSON */}
-          <div className="bg-black p-4 rounded-xl h-[500px] overflow-y-auto">
-            <h3 className="text-green-400 mb-3 font-semibold">
-              Full API Response
-            </h3>
-
-            <pre className="text-green-300 text-xs whitespace-pre-wrap leading-relaxed">
+          {/* JSON */}
+          <div className="bg-black p-4 rounded-xl max-h-[300px] overflow-y-auto">
+            <pre className="text-green-400 text-xs">
               {JSON.stringify(product, null, 2)}
             </pre>
           </div>
@@ -189,7 +190,7 @@ export function RetrieveProduct() {
 
 /* ================= VARIABLE PRODUCT ================= */
 
-export function CreateVariableProduct() {
+export function CreateVariableProduct({ addLog }) {
   const [price, setPrice] = useState("");
   const [weight, setWeight] = useState("");
   const [length, setLength] = useState("");
@@ -217,7 +218,9 @@ export function CreateVariableProduct() {
         count: Number(count),
       });
 
-      setProducts(res.data.data || []);
+      const items = res.data.data || [];
+      setProducts(items);
+      addLog(`🟣 Created ${items.length} variable products`);
     } catch (err) {
       setError("Failed ❌");
     }
@@ -244,20 +247,33 @@ export function CreateVariableProduct() {
 
       {error && <p className="text-red-400 mt-4">{error}</p>}
 
-      {/* 🔥 SCROLLABLE */}
       {products.length > 0 && (
         <div className="mt-6 bg-gray-900 p-4 rounded-xl h-[400px] overflow-y-auto">
           <h3 className="mb-3 text-purple-400 font-semibold">
             Created Variable Products
           </h3>
 
-          {products.map((p) => (
-            <div key={p.id} className="card-row">
-              <span>#{p.id}</span>
-              <span>{p.name}</span>
-              <span className="text-green-400">₹{p.price}</span>
-            </div>
-          ))}
+          <div className="space-y-3">
+            {products.map((p) => (
+              <div
+                key={p.id}
+                className="bg-gray-800 p-4 rounded-xl border border-gray-700"
+              >
+                <div className="flex justify-between mb-2">
+                  <span className="font-semibold">Product #{p.id}</span>
+                  <span className="text-purple-400">₹{p.price}</span>
+                </div>
+
+                <div className="text-sm text-gray-400 grid grid-cols-2 gap-2">
+                  <span>Name: {p.name}</span>
+                  <span>Status: {p.status}</span>
+                  <span>Type: {p.type}</span>
+                  <span>Stock: {p.stock_quantity}</span>
+                  <span>Variants: {p.variations?.length || 0}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
