@@ -5,6 +5,8 @@ const {
   createProduct,
   createVariableProduct,
   retrieveProductService,
+  duplicateProductService,
+  fetchAllProductsService,
 } = require("../../services/productService.js");
 
 router.post("/create-simple-product", async (req, res) => {
@@ -64,6 +66,23 @@ router.get("/retrieve-product/:productId", async (req, res) => {
     });
   } catch (error) {
     res.status(error.response?.status || 500).json({
+      success: false,
+      message: error.response?.data?.message || error.message,
+    });
+  }
+});
+
+router.get("/fetch-all-products", async (req, res) => {
+  try {
+    const products = await fetchAllProductsService();
+
+    return res.status(200).json({
+      success: true,
+      count: products.length,
+      data: products,
+    });
+  } catch (error) {
+    return res.status(500).json({
       success: false,
       message: error.response?.data?.message || error.message,
     });

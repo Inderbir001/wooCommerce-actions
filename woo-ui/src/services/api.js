@@ -14,3 +14,7 @@ export const createVariableProduct = (data) =>
 
 export const retrieveProduct = (data) =>
   API.get(`/products/retrieve-product/${data.productId}`);
+
+export const fetchAllProducts = () => {
+  return axios.get("http://localhost:5000/products/fetch-all-products");
+};

@@ -4,6 +4,7 @@ import {
   CreateSimpleProduct,
   CreateVariableProduct,
   RetrieveProduct,
+  FetchAllProducts,
 } from "./pages/CreateProduct";
 
 export default function App() {
@@ -18,9 +19,8 @@ export default function App() {
   const handleSectionChange = (sec) => {
     setSection(sec);
 
-    // reset tabs based on section
     if (sec === "orders") setActive("orders");
-    if (sec === "products") setActive("simple");
+    if (sec === "products") setActive("fetchAll"); // 🔥 better default
   };
 
   return (
@@ -60,10 +60,8 @@ export default function App() {
       {/* MAIN */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* HEADER */}
-        <div className="p-6 border-b border-gray-800 flex justify-left items-center">
-          <h1 className="text-2xl font-bold capitalize text-center">
-            {section} Dashboard
-          </h1>
+        <div className="p-6 border-b border-gray-800">
+          <h1 className="text-2xl font-bold capitalize">{section} Dashboard</h1>
         </div>
 
         {/* CONTENT */}
@@ -89,35 +87,30 @@ export default function App() {
                 <>
                   <button
                     onClick={() => setActive("simple")}
-                    className={`px-4 py-2 rounded-t ${
-                      active === "simple"
-                        ? "bg-gray-800 border border-gray-700 border-b-0"
-                        : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-4 py-2 rounded-t ${active === "simple" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
                   >
-                    Create Simple Product
+                    Create Simple
                   </button>
 
                   <button
                     onClick={() => setActive("variable")}
-                    className={`px-4 py-2 rounded-t ${
-                      active === "variable"
-                        ? "bg-gray-800 border border-gray-700 border-b-0"
-                        : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-4 py-2 rounded-t ${active === "variable" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
                   >
-                    Create Variable Product
+                    Variable
                   </button>
 
                   <button
                     onClick={() => setActive("fetchProduct")}
-                    className={`px-4 py-2 rounded-t ${
-                      active === "fetchProduct"
-                        ? "bg-gray-800 border border-gray-700 border-b-0"
-                        : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-4 py-2 rounded-t ${active === "fetchProduct" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
                   >
-                    Fetch Product Data
+                    Single
+                  </button>
+
+                  <button
+                    onClick={() => setActive("fetchAll")}
+                    className={`px-4 py-2 rounded-t ${active === "fetchAll" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
+                  >
+                    Fetch All
                   </button>
                 </>
               )}
@@ -140,6 +133,11 @@ export default function App() {
               {section === "products" && active === "fetchProduct" && (
                 <RetrieveProduct addLog={addLog} />
               )}
+
+              {/* 🔥 THIS WAS MISSING */}
+              {section === "products" && active === "fetchAll" && (
+                <FetchAllProducts addLog={addLog} />
+              )}
             </div>
           </div>
 
@@ -147,11 +145,11 @@ export default function App() {
           <div className="w-80 border-l border-gray-800 p-4 overflow-y-auto bg-gray-950">
             <h2 className="font-semibold mb-4">Activity</h2>
 
-            <div className="space-y-2 text-sm">
-              {logs.length === 0 && (
-                <p className="text-gray-500">No activity yet</p>
-              )}
+            {logs.length === 0 && (
+              <p className="text-gray-500">No activity yet</p>
+            )}
 
+            <div className="space-y-2 text-sm">
               {logs.map((log) => (
                 <div
                   key={log.id}
