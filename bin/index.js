@@ -5,7 +5,12 @@ const figlet = require("figlet");
 
 const { showMainMenu } = require("../cli/mainMenu");
 const { handleOrder } = require("../cli/actions/order");
-const { handleProduct, retrieveProduct } = require("../cli/actions/product");
+const {
+  handleProduct,
+  retrieveProduct,
+  duplicateProduct,
+  fetchAllProducts,
+} = require("../cli/actions/product");
 
 console.log(
   chalk.blue(
@@ -20,7 +25,7 @@ console.log(
     ),
   ),
 );
-console.log(chalk.greenBright(" version 1.0.0 by inderbir\n"));
+console.log(chalk.greenBright(" version 1.0.34 by Inderbir Singh\n"));
 
 async function startCLI() {
   const action = await showMainMenu();
@@ -31,6 +36,10 @@ async function startCLI() {
     await handleProduct();
   } else if (action === "retrieveProduct") {
     await retrieveProduct();
+  } else if (action === "duplicateProduct") {
+    await duplicateProduct();
+  } else if (action === "fetchAllProducts") {
+    await fetchAllProducts();
   } else {
     console.log("👋 Exiting...");
     process.exit();

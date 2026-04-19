@@ -5,6 +5,7 @@ const {
   getVariableProductData,
   getVariantData,
 } = require("../cli/data/productData");
+const chalk = require("chalk");
 
 async function createProduct(simpleProductInput, numOfProducts) {
   const productResults = [];
@@ -84,15 +85,95 @@ const retrieveProductService = async function (productId) {
       },
     );
 
-    console.log(response.data);
+    console.log(
+      ` > > > Product Details fetched successfully. ✅
+
+Response:`,
+      response.data,
+    );
     return response.data;
   } catch (err) {
     console.log(err.data?.response?.message || err.message);
   }
 };
 
+async function duplicateProductService(productId, numOfProducts) {
+  const res = [];
+  try {
+    for (let i = 0; i < numOfProducts; i++) {
+      const result = await axios.post(
+        `${config.baseUrl}/wp-json/wc/v3/products/${productId}/duplicate`,
+        {},
+        {
+          auth: {
+            username: config.key,
+            password: config.secret,
+          },
+        },
+      );
+      res.push(result.data);
+      const publishResponse = await axios.put(
+        `${config.baseUrl}/wp-json/wc/v3/products/${productId}`,
+        {
+          status: "publish",
+        },
+        {
+          auth: {
+            username: config.key,
+            password: config.secret,
+          },
+        },
+      );
+      console.log(
+        ` > > > Product Duplication Successful ${i + 1} of ${numOfProducts} times. ID: ${result.data.id}, Name: ${result.data.name}`,
+      );
+    }
+    return res;
+  } catch (error) {
+    console.log(
+      " > > > Product Duplication Failed : \n \n Response:",
+      error.response?.data?.message || error.message,
+    );
+  }
+}
+
+async function fetchAllProductsService() {
+  let page = 1;
+  let totalPages = 1;
+  let allProducts = [];
+
+  try {
+    while (page <= totalPages) {
+      const response = await axios.get(
+        `${config.baseUrl}/wp-json/wc/v3/products`,
+        {
+          params: {
+            per_page: 100,
+            page: page,
+          },
+          auth: {
+            username: config.key,
+            password: config.secret,
+          },
+        },
+      );
+      console.log("Page:", page, "Fetched:", response.data.length);
+      totalPages = Number(response.headers["x-wp-totalpages"]);
+      allProducts = [...allProducts, ...response.data];
+
+      page++;
+    }
+
+    return allProducts;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+}
+
 module.exports = {
   createProduct,
   createVariableProduct,
   retrieveProductService,
+  duplicateProductService,
+  fetchAllProductsService,
 };

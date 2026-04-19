@@ -4,6 +4,8 @@ const {
   createProduct,
   createVariableProduct,
   retrieveProductService,
+  duplicateProductService,
+  fetchAllProductsService,
 } = require("../../services/productService");
 
 async function handleProduct() {
@@ -81,4 +83,53 @@ async function retrieveProduct() {
   }
 }
 
-module.exports = { handleProduct, retrieveProduct };
+async function duplicateProduct() {
+  const input = await inquirer.prompt([
+    {
+      type: "input",
+      name: "productId",
+      message: "Enter the product Id of the product you want to duplicate: ",
+    },
+    {
+      type: "input",
+      name: "numOfProducts",
+      message: "Enter the number of duplicated products you want: ",
+    },
+  ]);
+  const spinner = ora("Processing").start();
+
+  try {
+    await duplicateProductService(input.productId, input.numOfProducts);
+    spinner.succeed("Product Duplication Successful.");
+  } catch (error) {
+    spinner.fail();
+  }
+}
+
+async function fetchAllProducts() {
+  const spinner = ora("Processing...").start();
+
+  try {
+    const products = await fetchAllProductsService();
+
+    spinner.succeed("Products fetched successfully\n");
+
+    console.log("Response:\n");
+
+    products.forEach((product) => {
+      console.log(
+        `Product ID: ${product.id} ---------- Name: ${product.name} ----------- Status: ${product.status}`,
+      );
+    });
+  } catch (err) {
+    spinner.fail("Failed to fetch products");
+    console.log(err.message);
+  }
+}
+
+module.exports = {
+  handleProduct,
+  retrieveProduct,
+  duplicateProduct,
+  fetchAllProducts,
+};
