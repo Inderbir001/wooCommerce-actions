@@ -89,4 +89,24 @@ router.get("/fetch-all-products", async (req, res) => {
   }
 });
 
+router.post("/duplicate-product", async (req, res) => {
+  try {
+    const products = await duplicateProductService(
+      req.body.productId,
+      req.body.numOfProducts,
+    );
+
+    return res.status(200).json({
+      success: true,
+      count: products.length,
+      data: products,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.response?.data?.message || error.message,
+    });
+  }
+});
+
 module.exports = router;

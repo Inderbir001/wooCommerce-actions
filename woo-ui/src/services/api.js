@@ -18,3 +18,6 @@ export const retrieveProduct = (data) =>
 export const fetchAllProducts = () => {
   return axios.get("http://localhost:5000/products/fetch-all-products");
 };
+
+export const duplicateProducts = (data) =>
+  API.post(`/products/duplicate-product`, data);

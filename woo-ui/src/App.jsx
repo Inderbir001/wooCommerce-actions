@@ -5,6 +5,7 @@ import {
   CreateVariableProduct,
   RetrieveProduct,
   FetchAllProducts,
+  DuplicateProduct,
 } from "./pages/CreateProduct";
 
 export default function App() {
@@ -20,7 +21,7 @@ export default function App() {
     setSection(sec);
 
     if (sec === "orders") setActive("orders");
-    if (sec === "products") setActive("fetchAll"); // 🔥 better default
+    if (sec === "products") setActive("fetchAll");
   };
 
   return (
@@ -52,8 +53,16 @@ export default function App() {
         </div>
 
         <div className="text-sm text-gray-400 border-t border-gray-700 pt-4">
-          <p>Version 3.1.3</p>
-          <p className="text-gray-500">by Inder</p>
+          <p>version {__APP_VERSION__}</p>
+          <p className="text-gray-500">by Inderbir Singh</p>
+          <a
+            href="https://github.com/Inderbir001"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-500 hover:text-white"
+          >
+            https://github.com/Inderbir001
+          </a>{" "}
         </div>
       </div>
 
@@ -89,28 +98,38 @@ export default function App() {
                     onClick={() => setActive("simple")}
                     className={`px-4 py-2 rounded-t ${active === "simple" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
                   >
-                    Create Simple
+                    Create Simple Product
                   </button>
 
                   <button
                     onClick={() => setActive("variable")}
                     className={`px-4 py-2 rounded-t ${active === "variable" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
                   >
-                    Variable
+                    Create Variable Product
                   </button>
 
                   <button
                     onClick={() => setActive("fetchProduct")}
                     className={`px-4 py-2 rounded-t ${active === "fetchProduct" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
                   >
-                    Single
+                    Fetch Single Product
                   </button>
 
                   <button
                     onClick={() => setActive("fetchAll")}
                     className={`px-4 py-2 rounded-t ${active === "fetchAll" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
                   >
-                    Fetch All
+                    Fetch All Products
+                  </button>
+                  <button
+                    onClick={() => setActive("duplicate")}
+                    className={`px-4 py-2 rounded-t ${
+                      active === "duplicate"
+                        ? "bg-gray-800 border border-gray-700 border-b-0"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    Duplicate Product
                   </button>
                 </>
               )}
@@ -134,9 +153,12 @@ export default function App() {
                 <RetrieveProduct addLog={addLog} />
               )}
 
-              {/* 🔥 THIS WAS MISSING */}
+              {/* THIS WAS MISSING */}
               {section === "products" && active === "fetchAll" && (
                 <FetchAllProducts addLog={addLog} />
+              )}
+              {section === "products" && active === "duplicate" && (
+                <DuplicateProduct addLog={addLog} />
               )}
             </div>
           </div>

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const config = require("../utils/config");
 
 const chalk = require("chalk");
 const figlet = require("figlet");
@@ -25,7 +26,7 @@ console.log(
     ),
   ),
 );
-console.log(chalk.greenBright(" version 1.0.34 by Inderbir Singh\n"));
+console.log(chalk.greenBright(`${config.version} by Inderbir Singh\n`));
 
 async function startCLI() {
   const action = await showMainMenu();

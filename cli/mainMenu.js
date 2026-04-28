@@ -9,9 +9,9 @@ async function showMainMenu() {
       choices: [
         { name: "1. Create Order", value: "order" },
         { name: "2. Create Product", value: "product" },
-        { name: "3. Retrieve Product", value: "retrieveProduct" },
-        { name: "4. Fetch all Products", value: "fetchAllProducts" },
-        { name: "5. Duplicate Product", value: "duplicateProduct" },
+        { name: "3. Fetch Single Product Data", value: "retrieveProduct" },
+        { name: "4. Fetch all Products Data", value: "fetchAllProducts" },
+        { name: "5. Duplicate a Product", value: "duplicateProduct" },
         { name: "6. Exit", value: "exit" },
       ],
     },
