@@ -317,7 +317,6 @@ export function FetchAllProducts({ addLog }) {
   const perPage = 50;
 
   const paginated = products.slice((page - 1) * perPage, page * perPage);
-
   const totalPages = Math.ceil(products.length / perPage);
 
   const handleFetch = async () => {
@@ -341,9 +340,12 @@ export function FetchAllProducts({ addLog }) {
   };
 
   return (
+    
     <div className="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col h-full">
+      {/* HEADER */}
       <h2 className="text-2xl font-semibold mb-5">Fetch All Products</h2>
 
+      {/* BUTTON */}
       <button
         onClick={handleFetch}
         disabled={loading}
@@ -355,10 +357,12 @@ export function FetchAllProducts({ addLog }) {
         <span>{loading ? "Fetching..." : "Fetch All"}</span>
       </button>
 
+      {/* ERROR */}
       {error && <p className="text-red-400 mt-4">{error}</p>}
 
+      {/* LIST */}
       {products.length > 0 && (
-        <div className="mt-6 bg-gray-900 p-4 rounded-xl h-[400px] overflow-y-auto">
+        <div className="mt-6 bg-gray-900 p-4 rounded-xl flex-1 overflow-y-auto min-h-0">
           <h3 className="mb-3 text-green-400 font-semibold">
             All Products ({products.length})
           </h3>
@@ -368,6 +372,7 @@ export function FetchAllProducts({ addLog }) {
             {Math.min(page * perPage, products.length)} of {products.length}
           </p>
 
+          {/* PRODUCTS */}
           <div className="space-y-3">
             {paginated.map((p) => (
               <div
@@ -389,6 +394,7 @@ export function FetchAllProducts({ addLog }) {
             ))}
           </div>
 
+          {/* PAGINATION */}
           <div className="flex justify-between items-center mt-4">
             <button
               onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -417,7 +423,6 @@ export function FetchAllProducts({ addLog }) {
     </div>
   );
 }
-
 /* ================= DUPLICATE PRODUCT ================= */
 
 export function DuplicateProduct({ addLog }) {

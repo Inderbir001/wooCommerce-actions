@@ -21,7 +21,7 @@ export default function App() {
     setSection(sec);
 
     if (sec === "orders") setActive("orders");
-    if (sec === "products") setActive("fetchAll");
+    if (sec === "products") setActive("simple");
   };
 
   return (
@@ -32,6 +32,7 @@ export default function App() {
           <h1 className="text-xl font-bold mb-8">WooCommerce Actions</h1>
 
           <div className="space-y-3">
+            {/* ORDERS */}
             <button
               onClick={() => handleSectionChange("orders")}
               className={`block w-full text-left px-3 py-2 rounded ${
@@ -41,20 +42,83 @@ export default function App() {
               Orders
             </button>
 
-            <button
-              onClick={() => handleSectionChange("products")}
-              className={`block w-full text-left px-3 py-2 rounded ${
-                section === "products" ? "bg-blue-600" : "hover:bg-gray-700"
-              }`}
-            >
-              Products
-            </button>
+            {/* PRODUCTS */}
+            <div>
+              <button
+                onClick={() => handleSectionChange("products")}
+                className={`block w-full text-left px-3 py-2 rounded ${
+                  section === "products" ? "bg-blue-600" : "hover:bg-gray-700"
+                }`}
+              >
+                Products {section === "products" ? "" : ""}
+              </button>
+
+              {/* SUB MENU */}
+              {section === "products" && (
+                <div className="ml-4 mt-2 space-y-2 text-sm">
+                  <button
+                    onClick={() => setActive("simple")}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      active === "simple" ? "bg-gray-700" : "hover:bg-gray-700"
+                    }`}
+                  >
+                    Create Simple
+                  </button>
+
+                  <button
+                    onClick={() => setActive("variable")}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      active === "variable"
+                        ? "bg-gray-700"
+                        : "hover:bg-gray-700"
+                    }`}
+                  >
+                    Create Variable
+                  </button>
+
+                  <button
+                    onClick={() => setActive("fetchProduct")}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      active === "fetchProduct"
+                        ? "bg-gray-700"
+                        : "hover:bg-gray-700"
+                    }`}
+                  >
+                    Fetch Single
+                  </button>
+
+                  <button
+                    onClick={() => setActive("fetchAll")}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      active === "fetchAll"
+                        ? "bg-gray-700"
+                        : "hover:bg-gray-700"
+                    }`}
+                  >
+                    Fetch All
+                  </button>
+
+                  <button
+                    onClick={() => setActive("duplicate")}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      active === "duplicate"
+                        ? "bg-gray-700"
+                        : "hover:bg-gray-700"
+                    }`}
+                  >
+                    Duplicate
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
+        {/* FOOTER */}
         <div className="text-sm text-gray-400 border-t border-gray-700 pt-4">
           <p>version {__APP_VERSION__}</p>
           <p className="text-gray-500">by Inderbir Singh</p>
+
           <a
             href="https://github.com/Inderbir001"
             target="_blank"
@@ -62,7 +126,7 @@ export default function App() {
             className="text-gray-500 hover:text-white"
           >
             https://github.com/Inderbir001
-          </a>{" "}
+          </a>
         </div>
       </div>
 
@@ -76,66 +140,7 @@ export default function App() {
         {/* CONTENT */}
         <div className="flex flex-1 overflow-hidden">
           {/* MAIN PANEL */}
-          <div className="flex-1 p-6 overflow-y-auto space-y-6">
-            {/* TABS */}
-            <div className="flex gap-3 border-b border-gray-800 pb-2">
-              {section === "orders" && (
-                <button
-                  onClick={() => setActive("orders")}
-                  className={`px-4 py-2 rounded-t ${
-                    active === "orders"
-                      ? "bg-gray-800 border border-gray-700 border-b-0"
-                      : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Create Orders
-                </button>
-              )}
-
-              {section === "products" && (
-                <>
-                  <button
-                    onClick={() => setActive("simple")}
-                    className={`px-4 py-2 rounded-t ${active === "simple" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
-                  >
-                    Create Simple Product
-                  </button>
-
-                  <button
-                    onClick={() => setActive("variable")}
-                    className={`px-4 py-2 rounded-t ${active === "variable" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
-                  >
-                    Create Variable Product
-                  </button>
-
-                  <button
-                    onClick={() => setActive("fetchProduct")}
-                    className={`px-4 py-2 rounded-t ${active === "fetchProduct" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
-                  >
-                    Fetch Single Product
-                  </button>
-
-                  <button
-                    onClick={() => setActive("fetchAll")}
-                    className={`px-4 py-2 rounded-t ${active === "fetchAll" ? "bg-gray-800 border border-gray-700 border-b-0" : "text-gray-400 hover:text-white"}`}
-                  >
-                    Fetch All Products
-                  </button>
-                  <button
-                    onClick={() => setActive("duplicate")}
-                    className={`px-4 py-2 rounded-t ${
-                      active === "duplicate"
-                        ? "bg-gray-800 border border-gray-700 border-b-0"
-                        : "text-gray-400 hover:text-white"
-                    }`}
-                  >
-                    Duplicate Product
-                  </button>
-                </>
-              )}
-            </div>
-
-            {/* CONTENT */}
+          <div className="flex-1 p-6 overflow-y-auto">
             <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700">
               {section === "orders" && active === "orders" && (
                 <CreateOrder addLog={addLog} />
@@ -153,10 +158,10 @@ export default function App() {
                 <RetrieveProduct addLog={addLog} />
               )}
 
-              {/* THIS WAS MISSING */}
               {section === "products" && active === "fetchAll" && (
                 <FetchAllProducts addLog={addLog} />
               )}
+
               {section === "products" && active === "duplicate" && (
                 <DuplicateProduct addLog={addLog} />
               )}
