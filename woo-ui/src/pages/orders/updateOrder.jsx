@@ -2,6 +2,21 @@ import { useState } from "react";
 import Select from "react-select";
 import { updateOrder } from "../../services/api";
 
+// 🧠 Label mapping (fix ugly keys)
+const LABELS = {
+  parent_id: "Parent ID",
+  status: "Order Status",
+  currency: "Currency",
+  customer_id: "Customer ID",
+  customer_note: "Customer Note",
+  "billing.first_name": "First Name",
+  "billing.last_name": "Last Name",
+  "billing.address_1": "Address Line 1",
+  "billing.city": "City",
+  "shipping.first_name": "Shipping First Name",
+  payment_method: "Payment Method",
+  payment_method_title: "Payment Title",
+};
 const currencyOptions = [
   { value: "AED", label: "AED - UAE Dirham 🇦🇪" },
   { value: "AFN", label: "AFN - Afghan Afghani 🇦🇫" },
@@ -84,6 +99,7 @@ const currencyOptions = [
   { value: "ZAR", label: "ZAR - South African Rand 🇿🇦" },
   { value: "ZMW", label: "ZMW - Zambian Kwacha 🇿🇲" },
 ];
+// same options (unchanged)
 const STATUS_OPTIONS = [
   "pending",
   "processing",
@@ -94,29 +110,23 @@ const STATUS_OPTIONS = [
   "failed",
   "trash",
 ];
-
 const TAX_STATUS_OPTIONS = ["taxable", "none"];
 
 const selectStyles = {
   control: (base) => ({
     ...base,
-    backgroundColor: "#1f2937",
+    backgroundColor: "#111827",
     borderColor: "#374151",
-    color: "white",
+    borderRadius: "0.75rem",
+    padding: "2px",
   }),
-  menu: (base) => ({
-    ...base,
-    backgroundColor: "#1f2937",
-  }),
+  menu: (base) => ({ ...base, backgroundColor: "#111827" }),
   option: (base, state) => ({
     ...base,
-    backgroundColor: state.isFocused ? "#374151" : "#1f2937",
+    backgroundColor: state.isFocused ? "#1f2937" : "#111827",
     color: "white",
   }),
-  singleValue: (base) => ({
-    ...base,
-    color: "white",
-  }),
+  singleValue: (base) => ({ ...base, color: "white" }),
 };
 
 export default function UpdateOrder({ addLog }) {
@@ -124,58 +134,29 @@ export default function UpdateOrder({ addLog }) {
   const [selected, setSelected] = useState([]);
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const fieldGroups = {
     Basic: ["parent_id", "status", "currency", "customer_id", "customer_note"],
     Billing: [
       "billing.first_name",
       "billing.last_name",
-      "billing.company",
       "billing.address_1",
-      "billing.address_2",
       "billing.city",
-      "billing.state",
-      "billing.postcode",
-      "billing.country",
-      "billing.email",
-      "billing.phone",
     ],
     Shipping: [
       "shipping.first_name",
       "shipping.last_name",
-      "shipping.company",
       "shipping.address_1",
-      "shipping.address_2",
       "shipping.city",
-      "shipping.state",
-      "shipping.postcode",
-      "shipping.country",
     ],
-    Payment: ["payment_method", "payment_method_title", "transaction_id"],
-    Advanced: [
-      "meta_data",
-      "line_items",
-      "shipping_lines",
-      "fee_lines.tax_status",
-      "fee_lines",
-      "coupon_lines",
-    ],
+    Payment: ["payment_method", "payment_method_title"],
+    Advanced: ["meta_data", "line_items", "fee_lines.tax_status"],
   };
 
   const toggleField = (field) => {
-    setSelected((prev) => {
-      if (prev.includes(field)) {
-        // remove value also
-        setValues((v) => {
-          const copy = { ...v };
-          delete copy[field];
-          return copy;
-        });
-        return prev.filter((f) => f !== field);
-      }
-      return [...prev, field];
-    });
+    setSelected((prev) =>
+      prev.includes(field) ? prev.filter((f) => f !== field) : [...prev, field],
+    );
   };
 
   const handleChange = (field, value) => {
@@ -184,40 +165,21 @@ export default function UpdateOrder({ addLog }) {
 
   const buildPayload = () => {
     const data = {};
-
     selected.forEach((field) => {
       let value = values[field];
       if (!value) return;
-
-      if (
-        [
-          "meta_data",
-          "line_items",
-          "shipping_lines",
-          "fee_lines",
-          "coupon_lines",
-        ].includes(field)
-      ) {
-        try {
-          value = JSON.parse(value);
-        } catch {
-          return;
-        }
-      }
 
       const keys = field.split(".");
       let obj = data;
 
       keys.forEach((key, i) => {
-        if (i === keys.length - 1) {
-          obj[key] = value;
-        } else {
+        if (i === keys.length - 1) obj[key] = value;
+        else {
           obj[key] = obj[key] || {};
           obj = obj[key];
         }
       });
     });
-
     return data;
   };
 
@@ -225,154 +187,112 @@ export default function UpdateOrder({ addLog }) {
     if (!orderId) return alert("Order ID required");
 
     const updateDetails = buildPayload();
-
-    if (Object.keys(updateDetails).length === 0) {
-      return alert("Select & fill at least one field");
-    }
+    if (Object.keys(updateDetails).length === 0)
+      return alert("Select at least one field");
 
     setLoading(true);
-    setError("");
-
     try {
-      const payload = {
+      await updateOrder({
         orderId: Number(orderId),
         updateDetails,
-      };
-
-      console.log("🔥 Payload:", payload);
-
-      await updateOrder(payload);
-
-      addLog(`✏️ Updated Order #${orderId}`);
-    } catch (err) {
-      console.error(err);
-      setError("Update failed ❌");
+      });
+      addLog(`Updated Order #${orderId}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-xl flex flex-col gap-4 h-full overflow-y-auto">
-      <h2 className="text-2xl font-semibold">Update Order</h2>
+    <div className="h-full overflow-y-auto p-6 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl space-y-6">
+      {/* HEADER */}
+      <div>
+        <h2 className="text-2xl font-semibold text-white">Update Order</h2>
+        <p className="text-sm text-gray-400">
+          Select fields and update only what you need
+        </p>
+      </div>
 
-      {/* ORDER ID */}
-      <input
-        className="input"
-        placeholder="Order ID (required)"
-        value={orderId}
-        onChange={(e) => setOrderId(e.target.value)}
-      />
-
-      {/* CHECKBOXES */}
+      {/* SECTIONS */}
       {Object.entries(fieldGroups).map(([group, fields]) => (
-        <div key={group}>
-          <h3 className="text-blue-400 mt-4 mb-2">{group}</h3>
-          <div className="grid grid-cols-2 gap-2">
+        <div
+          key={group}
+          className="bg-gray-900/70 border border-gray-700 rounded-2xl p-5 space-y-4"
+        >
+          <h3 className="text-blue-400 font-semibold">{group}</h3>
+
+          <div className="grid md:grid-cols-2 gap-3">
             {fields.map((field) => (
-              <label key={field} className="flex items-center gap-2">
+              <label
+                key={field}
+                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-800 cursor-pointer transition"
+              >
                 <input
                   type="checkbox"
                   checked={selected.includes(field)}
                   onChange={() => toggleField(field)}
                 />
-                <span className="text-sm">{field}</span>
+                <span className="text-sm text-gray-300">
+                  {LABELS[field] || field}
+                </span>
               </label>
             ))}
           </div>
         </div>
       ))}
 
-      {/* DYNAMIC INPUTS */}
+      {/* INPUTS */}
       {selected.length > 0 && (
-        <div className="mt-4 space-y-3">
-          <h3 className="text-green-400">Fill Selected Fields</h3>
+        <div className="bg-gray-900 border border-gray-700 rounded-2xl p-5 space-y-4">
+          <h3 className="text-green-400 font-semibold">Fill Selected Fields</h3>
 
           {selected.map((field) => {
-            // ✅ STATUS DROPDOWN
             if (field === "status") {
               return (
                 <select
                   key={field}
                   className="input"
-                  value={values[field] || ""}
                   onChange={(e) => handleChange(field, e.target.value)}
                 >
                   <option value="">Select status</option>
-                  {STATUS_OPTIONS.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
+                  {STATUS_OPTIONS.map((s) => (
+                    <option key={s}>{s}</option>
                   ))}
                 </select>
               );
             }
 
-            // ✅ TAX STATUS
             if (field === "fee_lines.tax_status") {
               return (
                 <select
                   key={field}
                   className="input"
-                  value={values[field] || ""}
                   onChange={(e) => handleChange(field, e.target.value)}
                 >
-                  <option value="">Select tax status</option>
-                  {TAX_STATUS_OPTIONS.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
+                  <option value="">Tax status</option>
+                  {TAX_STATUS_OPTIONS.map((t) => (
+                    <option key={t}>{t}</option>
                   ))}
                 </select>
               );
             }
 
-            // ✅ CURRENCY FIXED
             if (field === "currency") {
               return (
                 <Select
                   key={field}
-                  options={currencyOptions}
                   styles={selectStyles}
                   placeholder="Search currency..."
-                  value={
-                    currencyOptions.find((c) => c.value === values[field]) ||
-                    null
-                  }
+                  options={currencyOptions}
                   onChange={(opt) => handleChange(field, opt ? opt.value : "")}
-                  isClearable
                 />
               );
             }
 
-            // JSON
-            if (
-              [
-                "meta_data",
-                "line_items",
-                "shipping_lines",
-                "fee_lines",
-                "coupon_lines",
-              ].includes(field)
-            ) {
-              return (
-                <textarea
-                  key={field}
-                  className="input h-24"
-                  placeholder={`Enter ${field} (JSON)`}
-                  value={values[field] || ""}
-                  onChange={(e) => handleChange(field, e.target.value)}
-                />
-              );
-            }
-
-            // default
             return (
               <input
                 key={field}
-                className="input"
-                placeholder={`Enter ${field}`}
-                value={values[field] || ""}
+                className="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+                placeholder={LABELS[field] || field}
                 onChange={(e) => handleChange(field, e.target.value)}
               />
             );
@@ -380,16 +300,22 @@ export default function UpdateOrder({ addLog }) {
         </div>
       )}
 
+      {/* ORDER ID */}
+      <input
+        className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+        placeholder="Order ID (required)"
+        value={orderId}
+        onChange={(e) => setOrderId(e.target.value)}
+      />
+
       {/* BUTTON */}
       <button
         onClick={handleUpdate}
-        className="btn-primary mt-4"
+        className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 font-semibold shadow-lg hover:opacity-90 transition"
         disabled={loading}
       >
         {loading ? "Updating..." : "Update Order"}
       </button>
-
-      {error && <p className="text-red-400">{error}</p>}
     </div>
   );
 }
