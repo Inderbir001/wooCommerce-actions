@@ -1,13 +1,11 @@
 import { useState } from "react";
 import CreateOrder from "./pages/orders/CreateOrder";
 import UpdateOrder from "./pages/orders/updateOrder";
-import {
-  CreateSimpleProduct,
-  CreateVariableProduct,
-  RetrieveProduct,
-  FetchAllProducts,
-  DuplicateProduct,
-} from "./pages/products/CreateProduct";
+import CreateSimpleProduct from "./pages/products/CreateSimpleProduct";
+import CreateVariableProduct from "./pages/products/CreateVariableProduct";
+import RetrieveProduct from "./pages/products/RetrieveProduct";
+import FetchAllProducts from "./pages/products/FetchAllProducts";
+import DuplicateProduct from "./pages/products/DuplicateProduct";
 
 export default function App() {
   const [section, setSection] = useState("orders");
