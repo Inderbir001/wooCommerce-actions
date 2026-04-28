@@ -1,7 +1,7 @@
 const axios = require("axios");
 const config = require("../utils/config");
 
-const { orderData } = require("../cli/data/orderData");
+const { orderData, updateOrderData } = require("../cli/data/orderData");
 
 async function createOrder(inputs, numOfOrders) {
   const results = [];
@@ -27,4 +27,23 @@ async function createOrder(inputs, numOfOrders) {
   return results;
 }
 
-module.exports = { createOrder };
+async function updateOrderService(orderId, updateDetails) {
+  try {
+    const response = await axios.put(
+      `${config.baseUrl}/wp-json/wc/v3/orders/${orderId}`,
+      updateDetails,
+      {
+        auth: {
+          username: config.key,
+          password: config.secret,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (err) {
+    throw new Error(err.response?.data?.message || "Failed to update order");
+  }
+}
+
+module.exports = { createOrder, updateOrderService };

@@ -1,12 +1,13 @@
 import { useState } from "react";
-import CreateOrder from "./pages/CreateOrder";
+import CreateOrder from "./pages/orders/CreateOrder";
+import UpdateOrder from "./pages/orders/updateOrder";
 import {
   CreateSimpleProduct,
   CreateVariableProduct,
   RetrieveProduct,
   FetchAllProducts,
   DuplicateProduct,
-} from "./pages/CreateProduct";
+} from "./pages/products/CreateProduct";
 
 export default function App() {
   const [section, setSection] = useState("orders");
@@ -33,14 +34,40 @@ export default function App() {
 
           <div className="space-y-3">
             {/* ORDERS */}
-            <button
-              onClick={() => handleSectionChange("orders")}
-              className={`block w-full text-left px-3 py-2 rounded ${
-                section === "orders" ? "bg-blue-600" : "hover:bg-gray-700"
-              }`}
-            >
-              Orders
-            </button>
+            <div>
+              <button
+                onClick={() => handleSectionChange("orders")}
+                className={`block w-full text-left px-3 py-2 rounded ${
+                  section === "orders" ? "bg-blue-600" : "hover:bg-gray-700"
+                }`}
+              >
+                Orders
+              </button>
+
+              {section === "orders" && (
+                <div className="ml-4 mt-2 space-y-2 text-sm">
+                  <button
+                    onClick={() => setActive("orders")}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      active === "orders" ? "bg-gray-700" : "hover:bg-gray-700"
+                    }`}
+                  >
+                    Create Order
+                  </button>
+
+                  <button
+                    onClick={() => setActive("updateOrder")}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      active === "updateOrder"
+                        ? "bg-gray-700"
+                        : "hover:bg-gray-700"
+                    }`}
+                  >
+                    Update Order
+                  </button>
+                </div>
+              )}
+            </div>
 
             {/* PRODUCTS */}
             <div>
@@ -144,6 +171,9 @@ export default function App() {
             <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700">
               {section === "orders" && active === "orders" && (
                 <CreateOrder addLog={addLog} />
+              )}
+              {section === "orders" && active === "updateOrder" && (
+                <UpdateOrder addLog={addLog} />
               )}
 
               {section === "products" && active === "simple" && (

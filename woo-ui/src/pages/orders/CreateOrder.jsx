@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createOrder } from "../services/api";
+import { createOrder } from "../../services/api";
 
 export default function CreateOrder({ addLog }) {
   const [product, setProduct] = useState("");

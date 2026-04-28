@@ -21,3 +21,5 @@ export const fetchAllProducts = () => {
 
 export const duplicateProducts = (data) =>
   API.post(`/products/duplicate-product`, data);
+
+export const updateOrder = (data) => API.put(`/orders/update-order`, data);

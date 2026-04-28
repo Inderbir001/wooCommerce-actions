@@ -5,7 +5,7 @@ import {
   retrieveProduct,
   fetchAllProducts,
   duplicateProducts,
-} from "../services/api";
+} from "../../services/api";
 
 function Input({ placeholder, value, setValue }) {
   return (

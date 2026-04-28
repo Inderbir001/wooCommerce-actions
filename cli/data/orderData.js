@@ -39,4 +39,85 @@ const orderData = (inputs) => {
   };
 };
 
+// const metaDataPropertiesHelper = {
+//   id,
+//   key,
+//   value,
+// };
+
+// const orderLineItemsHelper = {
+//   name,
+//   product_id,
+//   variation_id,
+//   quantity,
+//   tax_class,
+//   subtotal,
+//   total,
+//   meta_data,
+// };
+
+// const taxLinespropertiesHelper = {
+//   meta_data,
+// };
+
+// const shippingLinePropertiesHelper = {
+//   method_title,
+//   method_id,
+//   total,
+//   meta_data,
+// };
+
+// const feesLinesPropertiesHelper = {
+//   name,
+//   tax_class,
+//   tax_status,
+//   total,
+//   meta_data,
+// };
+
+// const couponLinePropertiesHelper = {
+//   code,
+//   meta_data,
+// };
+
+// const updateOrder = {
+//   parent_id,
+//   status,
+//   currency,
+//   customer_id,
+//   customer_note,
+//   billing: {
+//     first_name,
+//     last_name,
+//     company,
+//     address_1,
+//     address_2,
+//     city,
+//     state,
+//     postcode,
+//     country,
+//     email,
+//     phone,
+//   },
+//   shipping: {
+//     first_name,
+//     last_name,
+//     company,
+//     address_1,
+//     address_2,
+//     city,
+//     state,
+//     postcode,
+//     country,
+//   },
+//   payment_method,
+//   payment_method_title,
+//   transaction_id,
+//   meta_data,
+//   line_items,
+//   shipping_lines,
+//   fee_lines,
+//   coupon_lines,
+// };
+
 module.exports = { orderData };

@@ -8,6 +8,7 @@ const {
   fetchAllProductsService,
 } = require("../../services/productService");
 
+//Create Products
 async function handleProduct() {
   const inputs = await inquirer.prompt([
     {
@@ -61,6 +62,7 @@ async function handleProduct() {
   }
 }
 
+//Retrieve Product
 async function retrieveProduct() {
   const inputs = await inquirer.prompt([
     {
@@ -83,6 +85,7 @@ async function retrieveProduct() {
   }
 }
 
+//Duplicate Product
 async function duplicateProduct() {
   const input = await inquirer.prompt([
     {
@@ -106,6 +109,7 @@ async function duplicateProduct() {
   }
 }
 
+//Fetch All Products
 async function fetchAllProducts() {
   const spinner = ora("Processing...").start();
 
