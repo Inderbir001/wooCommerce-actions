@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Dashboard from "./pages/Dashboard";
 import CreateOrder from "./pages/orders/CreateOrder";
 import UpdateOrder from "./pages/orders/updateOrder";
 import CreateSimpleProduct from "./pages/products/CreateSimpleProduct";
@@ -8,8 +9,8 @@ import FetchAllProducts from "./pages/products/FetchAllProducts";
 import DuplicateProduct from "./pages/products/DuplicateProduct";
 
 export default function App() {
-  const [section, setSection] = useState("orders");
-  const [active, setActive] = useState("orders");
+  const [section, setSection] = useState("dashboard");
+  const [active, setActive] = useState("dashboard");
   const [logs, setLogs] = useState([]);
 
   const addLog = (msg) => {
@@ -19,8 +20,14 @@ export default function App() {
   const handleSectionChange = (sec) => {
     setSection(sec);
 
+    if (sec === "dashboard") setActive("dashboard");
     if (sec === "orders") setActive("orders");
     if (sec === "products") setActive("simple");
+  };
+
+  const handleNavigate = (nextSection, nextActive) => {
+    setSection(nextSection);
+    setActive(nextActive);
   };
 
   return (
@@ -31,6 +38,16 @@ export default function App() {
           <h1 className="text-xl font-bold mb-8">WooCommerce Actions</h1>
 
           <div className="space-y-3">
+            {/* DASHBOARD */}
+            <button
+              onClick={() => handleSectionChange("dashboard")}
+              className={`block w-full text-left px-3 py-2 rounded ${
+                section === "dashboard" ? "bg-blue-600" : "hover:bg-gray-700"
+              }`}
+            >
+              Dashboard
+            </button>
+
             {/* ORDERS */}
             <div>
               <button
@@ -159,7 +176,7 @@ export default function App() {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* HEADER */}
         <div className="p-6 border-b border-gray-800">
-          <h1 className="text-2xl font-bold capitalize">{section} Dashboard</h1>
+          <h1 className="text-2xl font-bold capitalize">{section}</h1>
         </div>
 
         {/* CONTENT */}
@@ -167,6 +184,10 @@ export default function App() {
           {/* MAIN PANEL */}
           <div className="flex-1 p-6 overflow-y-auto">
             <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700">
+              {section === "dashboard" && (
+                <Dashboard logs={logs} onNavigate={handleNavigate} />
+              )}
+
               {section === "orders" && active === "orders" && (
                 <CreateOrder addLog={addLog} />
               )}
